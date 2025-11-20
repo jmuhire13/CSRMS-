@@ -4,7 +4,8 @@ import workImage from '../assets/1.jpeg'
 
 const Work = ({ setActiveSection }) => {
   const handleCardClick = () => {
-    setActiveSection('how-we-operate')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setTimeout(() => setActiveSection('how-we-operate'), 300)
   }
 
   return (

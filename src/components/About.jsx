@@ -8,7 +8,8 @@ const About = ({ setActiveSection }) => {
       1: 'our-mission',
       2: 'governance-team'
     }
-    setActiveSection(routes[cardId])
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setTimeout(() => setActiveSection(routes[cardId]), 300)
   }
 
   return (

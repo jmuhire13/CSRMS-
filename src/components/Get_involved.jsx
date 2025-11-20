@@ -12,7 +12,8 @@ const Get_involved = ({ setActiveSection }) => {
       3: 'legacy',
       4: 'volunteer'
     }
-    setActiveSection(routes[cardId])
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    setTimeout(() => setActiveSection(routes[cardId]), 300)
   }
   const cards = [
     {

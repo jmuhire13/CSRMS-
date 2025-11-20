@@ -3,8 +3,15 @@ import { motion } from 'motion/react'
 import heroImage from '../assets/heroImage.jpg' // Ensure you have an appropriate image in this path
 
 const Hero = () => {
+  const scrollToContent = () => {
+    const contentSection = document.getElementById('content')
+    if (contentSection) {
+      contentSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }
+
   return (
-    <div id='home' className='min-h-screen flex items-center justify-center pt-24 sm:pt-28 pb-8 sm:pb-12 px-6 sm:px-8 lg:px-12' style={{ backgroundColor: 'var(--off-white)' }}>
+    <div id='home' className='flex items-center justify-center pt-24 sm:pt-28 pb-12 sm:pb-16 px-6 sm:px-8 lg:px-12' style={{ backgroundColor: 'var(--off-white)' }}>
       <div className='w-[95%] max-w-7xl mx-auto'>
         
         {/* Rounded Container with Image Background */}
@@ -12,7 +19,7 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className='relative rounded-3xl overflow-hidden shadow-2xl min-h-[500px] sm:min-h-[600px] lg:min-h-[700px] flex items-center'
+          className='relative rounded-3xl overflow-hidden shadow-2xl min-h-[450px] sm:min-h-[500px] lg:min-h-[550px] flex items-center'
         >
           {/* Background Image */}
           <img 
@@ -46,6 +53,7 @@ const Hero = () => {
               {/* CTAs */}
               <div className='flex flex-col sm:flex-row gap-3 sm:gap-4'>
                 <motion.button
+                  onClick={scrollToContent}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className='px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-white transition w-full sm:w-auto text-base sm:text-lg shadow-lg hover:shadow-xl'
@@ -54,6 +62,7 @@ const Hero = () => {
                   Get Started
                 </motion.button>
                 <motion.button
+                  onClick={scrollToContent}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className='px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold border-2 transition w-full sm:w-auto text-base sm:text-lg text-white border-white hover:bg-white hover:text-navy-blue shadow-lg hover:shadow-xl'

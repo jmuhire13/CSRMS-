@@ -6,8 +6,21 @@ import legacyImage2 from '../assets/2.jpeg'
 const LegacySection = ({ setActiveSection }) => {
   return (
     <div id='legacy' style={{ backgroundColor: 'var(--white)' }}>
+      {/* Back Button */}
+      <div className='px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-4'>
+        <motion.button
+          onClick={() => setActiveSection('get-involved')}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className='px-6 py-3 rounded-full font-semibold text-white transition shadow-lg hover:shadow-xl'
+          style={{ backgroundColor: 'var(--navy-blue)' }}
+        >
+          ← Back
+        </motion.button>
+      </div>
+
       {/* Hero Section */}
-      <div className='min-h-screen pt-32 px-4 pb-16 flex items-center' style={{ backgroundColor: 'var(--off-white)' }}>
+      <div className='min-h-screen pt-8 px-4 pb-16 flex items-center' style={{ backgroundColor: 'var(--off-white)' }}>
         <div className='container mx-auto max-w-5xl'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center'>
             {/* Left - Text */}
@@ -46,22 +59,7 @@ const LegacySection = ({ setActiveSection }) => {
         </div>
       </div>
 
-      {/* Back Button */}
-      <div className='px-4 pt-8 pb-4'>
-        <div className='container mx-auto max-w-5xl'>
-          <motion.button
-            onClick={() => setActiveSection('get-involved')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className='px-6 py-2 rounded-full font-semibold transition'
-            style={{ backgroundColor: 'var(--beige-accent)', color: 'var(--white)' }}
-          >
-            ← Back
-          </motion.button>
-        </div>
-      </div>
-
-      {/* Section 1: Show Your Solidarity */}
+      {/* Legacy Giving Content */}
       <div className='px-4 py-16' style={{ backgroundColor: 'var(--white)' }}>
         <div className='container mx-auto max-w-5xl'>
           <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center'>

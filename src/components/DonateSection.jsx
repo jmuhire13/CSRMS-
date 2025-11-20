@@ -5,8 +5,21 @@ import donateImage from '../assets/2.jpeg'
 const DonateSection = ({ setActiveSection }) => {
   return (
     <div id='donate' style={{ backgroundColor: 'var(--white)' }}>
+      {/* Back Button */}
+      <div className='px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-4'>
+        <motion.button
+          onClick={() => setActiveSection('get-involved')}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className='px-6 py-3 rounded-full font-semibold text-white transition shadow-lg hover:shadow-xl'
+          style={{ backgroundColor: 'var(--navy-blue)' }}
+        >
+          ← Back
+        </motion.button>
+      </div>
+
       {/* Hero Section */}
-      <div className='min-h-screen pt-32 px-4 pb-16 flex items-center' style={{ backgroundColor: 'var(--off-white)' }}>
+      <div className='min-h-screen pt-8 px-4 pb-16 flex items-center' style={{ backgroundColor: 'var(--off-white)' }}>
         <div className='container mx-auto max-w-5xl'>
           <motion.div
             initial={{ opacity: 0, y: -30 }}
@@ -29,21 +42,6 @@ const DonateSection = ({ setActiveSection }) => {
               Have a look at the different ways you can donate.
             </p>
           </motion.div>
-        </div>
-      </div>
-
-      {/* Back Button */}
-      <div className='px-4 pt-8 pb-4'>
-        <div className='container mx-auto max-w-5xl'>
-          <motion.button
-            onClick={() => setActiveSection('get-involved')}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className='px-6 py-2 rounded-full font-semibold transition'
-            style={{ backgroundColor: 'var(--beige-accent)', color: 'var(--white)' }}
-          >
-            ← Back
-          </motion.button>
         </div>
       </div>
 
