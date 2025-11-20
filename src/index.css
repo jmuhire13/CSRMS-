@@ -1,0 +1,21 @@
+@import"tailwindcss";
+ 
+:root {
+  /* Logo Colors */
+  --navy-blue: #2C3E5F;        /* Dark blue from heart */
+  --slate-blue: #8B95A7;       /* Light blue/gray from hands */
+  --white: #FFFFFF;            /* Background/negative space */
+  --light-navy: #3D5175;       /* Lighter version of navy */
+  --pale-blue: #B8C1D1;        /* Lighter version of slate */
+  --off-white: #F8F9FA;        /* Slight gray-white for backgrounds */
+  --beige-accent: #e4e3e2;     /* Beige/tan accent color */
+  
+  /* Color Aliases for compatibility */
+  --herobg: #021334;           /* Using navy blue for hero background */
+  --para: rgba(29, 31, 32, 0.8);  /* Using slate blue for paragraph text */
+  --primary: #2C3E5F;          /* Using navy blue as primary */
+
+  /* Font Families */
+  --font-primary: 'Poppins', sans-serif;
+  --font-secondary: 'Syne', sans-serif;
+}
