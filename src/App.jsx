@@ -14,7 +14,8 @@ import OurMissionSection from './components/OurMissionSection'
 import GovernanceTeamSection from './components/GovernanceTeamSection'
 import Blog from './components/Blog'
 import Footer from './components/Footer'
-import HomeContent from './components/HomeContent'  
+import HomeContent from './components/HomeContent'
+import ContactUs from './components/ContactUs'  
 
 function App() {
   const [activeSection, setActiveSection] = useState('home')
@@ -40,6 +41,7 @@ function App() {
       {activeSection === 'our-mission' && <OurMissionSection setActiveSection={setActiveSection}/>}
       {activeSection === 'governance-team' && <GovernanceTeamSection setActiveSection={setActiveSection}/>}
       {activeSection === 'blog' && <Blog/>}
+      {activeSection === 'contact-us' && <ContactUs setActiveSection={setActiveSection}/>}
       
       <Footer setActiveSection={setActiveSection}/>
     </div>

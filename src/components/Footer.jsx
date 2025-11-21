@@ -3,29 +3,7 @@ import { motion } from 'motion/react'
 import { FaLinkedin, FaInstagram, FaTwitter, FaFacebook, FaYoutube, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
 
 const Footer = ({ setActiveSection }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  })
-
   const [activeAccordion, setActiveAccordion] = useState(null)
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle form submission
-    console.log('Form submitted:', formData)
-    // Reset form
-    setFormData({ name: '', email: '', subject: '', message: '' })
-  }
 
   const handleNavigation = (sectionId) => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -69,82 +47,6 @@ const Footer = ({ setActiveSection }) => {
 
   return (
     <footer style={{ backgroundColor: 'var(--navy-blue)' }}>
-      {/* Contact Form Section */}
-      <div className='px-4 py-16' style={{ backgroundColor: 'var(--off-white)' }}>
-        <div className='container mx-auto max-w-4xl'>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className='text-3xl sm:text-4xl font-bold font-secondary mb-4 text-center' style={{ color: 'var(--navy-blue)' }}>
-              Get in Touch
-            </h2>
-            <p className='text-center mb-8' style={{ color: 'var(--para)' }}>
-              Have questions? We'd love to hear from you.
-            </p>
-
-            <form onSubmit={handleSubmit} className='max-w-2xl mx-auto space-y-4'>
-              <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                <input
-                  type='text'
-                  name='name'
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  placeholder='Your Name'
-                  required
-                  className='px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-navy-blue transition'
-                  style={{ borderColor: 'var(--pale-blue)' }}
-                />
-                <input
-                  type='email'
-                  name='email'
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder='Your Email'
-                  required
-                  className='px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-navy-blue transition'
-                  style={{ borderColor: 'var(--pale-blue)' }}
-                />
-              </div>
-              
-              <input
-                type='text'
-                name='subject'
-                value={formData.subject}
-                onChange={handleInputChange}
-                placeholder='Subject'
-                required
-                className='w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-navy-blue transition'
-                style={{ borderColor: 'var(--pale-blue)' }}
-              />
-              
-              <textarea
-                name='message'
-                value={formData.message}
-                onChange={handleInputChange}
-                placeholder='Your Message'
-                required
-                rows='5'
-                className='w-full px-4 py-3 rounded-lg border-2 focus:outline-none focus:border-navy-blue transition'
-                style={{ borderColor: 'var(--pale-blue)' }}
-              ></textarea>
-              
-              <motion.button
-                type='submit'
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className='w-full px-8 py-4 rounded-full font-semibold text-white transition'
-                style={{ backgroundColor: 'var(--navy-blue)' }}
-              >
-                Send Message
-              </motion.button>
-            </form>
-          </motion.div>
-        </div>
-      </div>
-
       {/* FAQs Section */}
       <div className='px-4 py-16' style={{ backgroundColor: 'var(--white)' }}>
         <div className='container mx-auto max-w-4xl'>

@@ -227,30 +227,6 @@ const LegacySection = ({ setActiveSection }) => {
           </motion.div>
         </div>
       </div>
-
-      {/* CTA Section */}
-      <div className='px-4 py-16' style={{ backgroundColor: 'var(--off-white)' }}>
-        <div className='container mx-auto max-w-4xl text-center'>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h3 className='text-2xl sm:text-3xl font-bold font-secondary mb-8' style={{ color: 'var(--navy-blue)' }}>
-              Ready to transform child welfare in Rwanda for generations?
-            </h3>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className='px-10 py-4 rounded-full font-semibold text-white transition text-lg'
-              style={{ backgroundColor: 'var(--navy-blue)' }}
-            >
-              Create Your Endowment Today
-            </motion.button>
-          </motion.div>
-        </div>
-      </div>
     </div>
   )
 }

@@ -249,15 +249,6 @@ const PartnerSection = ({ setActiveSection }) => {
                 </p>
               </div>
             </div>
-
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className='mt-12 px-10 py-4 rounded-full font-semibold text-white transition text-lg'
-              style={{ backgroundColor: 'var(--primary)' }}
-            >
-              Start a Partnership
-            </motion.button>
           </motion.div>
         </div>
       </div>

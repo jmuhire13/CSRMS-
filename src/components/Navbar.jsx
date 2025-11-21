@@ -16,21 +16,6 @@ const Navbar = ({ activeSection, setActiveSection }) => {
                 <motion.a
                     whileHover={{scale: 1.05}}
                     whileTap={{scale: 0.95}}
-                    href="#home" 
-                    onClick={() => handleNavClick('home')} 
-                    className={`block md:inline-block transition-colors duration-200 ${
-                        activeSection === 'home' 
-                            ? 'font-semibold' 
-                            : 'hover:opacity-80'
-                    }`}
-                    style={{ color: 'var(--navy-blue)' }}>
-                    Home
-                </motion.a>
-            </li>
-            <li>
-                <motion.a
-                    whileHover={{scale: 1.05}}
-                    whileTap={{scale: 0.95}}
                     href="#get-involved" 
                     onClick={() => handleNavClick('get-involved')} 
                     className={`block md:inline-block transition-colors duration-200 ${
@@ -85,6 +70,21 @@ const Navbar = ({ activeSection, setActiveSection }) => {
                     }`}
                     style={{ color: 'var(--navy-blue)' }}>
                     Blog
+                </motion.a>
+            </li>
+            <li>
+                <motion.a
+                    whileHover={{scale: 1.05}}
+                    whileTap={{scale: 0.95}}
+                    href="#contact-us" 
+                    onClick={() => handleNavClick('contact-us')} 
+                    className={`block md:inline-block transition-colors duration-200 ${
+                        activeSection === 'contact-us' 
+                            ? 'font-semibold' 
+                            : 'hover:opacity-80'
+                    }`}
+                    style={{ color: 'var(--navy-blue)' }}>
+                    Contact Us
                 </motion.a>
             </li>
         </ul>

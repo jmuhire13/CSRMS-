@@ -430,6 +430,10 @@ const GovernanceTeamSection = ({ setActiveSection }) => {
             </div>
 
             <motion.button
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+                setTimeout(() => setActiveSection('volunteer'), 300)
+              }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className='px-10 py-4 rounded-full font-semibold text-white transition text-lg'
