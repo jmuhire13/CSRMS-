@@ -152,15 +152,26 @@ const HomeContent = ({ setActiveSection }) => {
             <p className='text-lg mb-6 max-w-2xl mx-auto' style={{ color: 'var(--para)' }}>
               Join us in building a compassionate Rwanda where every child has access to the resources they need to thrive.
             </p>
-            <motion.button
-              onClick={() => handleNavigation('get-involved')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className='px-8 py-4 rounded-full font-semibold text-white transition text-lg shadow-lg hover:shadow-xl'
-              style={{ backgroundColor: 'var(--navy-blue)' }}
-            >
-              Get Involved Today
-            </motion.button>
+            <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
+              <motion.a
+                href="#portal"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className='px-8 py-4 rounded-full font-semibold transition text-lg shadow-lg hover:shadow-xl text-center text-navy-blue bg-white border-2'
+                style={{ color: 'var(--navy-blue)', borderColor: 'var(--navy-blue)' }}
+              >
+                Access CSRMS Portal
+              </motion.a>
+              <motion.button
+                onClick={() => handleNavigation('get-involved')}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className='px-8 py-4 rounded-full font-semibold text-white transition text-lg shadow-lg hover:shadow-xl'
+                style={{ backgroundColor: 'var(--navy-blue)' }}
+              >
+                Get Involved Today
+              </motion.button>
+            </div>
           </div>
         </motion.div>
 

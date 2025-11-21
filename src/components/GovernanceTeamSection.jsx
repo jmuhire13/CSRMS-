@@ -429,18 +429,29 @@ const GovernanceTeamSection = ({ setActiveSection }) => {
               </div>
             </div>
 
-            <motion.button
-              onClick={() => {
-                window.scrollTo({ top: 0, behavior: 'smooth' })
-                setTimeout(() => setActiveSection('volunteer'), 300)
-              }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className='px-10 py-4 rounded-full font-semibold text-white transition text-lg'
-              style={{ backgroundColor: 'var(--navy-blue)' }}
-            >
-              Join Our Team
-            </motion.button>
+            <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
+              <motion.a
+                href="#portal"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className='px-8 py-4 rounded-full font-semibold transition text-lg shadow-lg hover:shadow-xl text-center text-navy-blue bg-white border-2'
+                style={{ color: 'var(--navy-blue)', borderColor: 'var(--navy-blue)' }}
+              >
+                Access Platform
+              </motion.a>
+              <motion.button
+                onClick={() => {
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                  setTimeout(() => setActiveSection('volunteer'), 300)
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className='px-10 py-4 rounded-full font-semibold text-white transition text-lg'
+                style={{ backgroundColor: 'var(--navy-blue)' }}
+              >
+                Join Our Team
+              </motion.button>
+            </div>
           </motion.div>
         </div>
       </div>

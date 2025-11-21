@@ -417,7 +417,7 @@ const ContactUs = ({ setActiveSection }) => {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className='px-12 py-4 rounded-full font-bold text-white transition shadow-lg hover:shadow-xl uppercase'
-                    style={{ backgroundColor: '#E74C3C' }}
+                    style={{ backgroundColor: 'var(--navy-blue)' }}
                   >
                     SEND
                   </motion.button>

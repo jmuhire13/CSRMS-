@@ -180,6 +180,16 @@ const HowWeOperateSection = ({ setActiveSection }) => {
               → delivery to children. Rwanda Data Protection Law ensures child safety 
               and donor privacy throughout.
             </p>
+            
+            <motion.a
+              href="#portal"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className='inline-block px-8 py-4 rounded-full font-semibold text-white transition text-lg shadow-lg hover:shadow-xl mb-8'
+              style={{ backgroundColor: 'var(--navy-blue)' }}
+            >
+              View Live Dashboard
+            </motion.a>
 
             <div className='grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10'>
               <div className='p-6 rounded-2xl' style={{ backgroundColor: 'var(--off-white)' }}>

@@ -120,8 +120,28 @@ const Navbar = ({ activeSection, setActiveSection }) => {
                     </nav>
                 </div>
 
-                {/* Donate button - Desktop */}
-                <div className='hidden lg:block'>
+                {/* Portal and Donate buttons - Desktop */}
+                <div className='hidden lg:flex items-center gap-3'>
+                    <motion.a 
+                        href="#portal" 
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className='text-navy-blue px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg border-2 bg-white'
+                        style={{ 
+                            color: 'var(--navy-blue)',
+                            borderColor: 'var(--navy-blue)'
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = 'var(--navy-blue)';
+                            e.currentTarget.style.color = 'white';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = 'white';
+                            e.currentTarget.style.color = 'var(--navy-blue)';
+                        }}
+                    >
+                        Access Portal
+                    </motion.a>
                     <motion.a 
                         href="#donate" 
                         onClick={() => handleNavClick('donate')}
@@ -179,15 +199,35 @@ const Navbar = ({ activeSection, setActiveSection }) => {
                         <nav className='mb-6'>
                             {navLinks}
                         </nav>
-                        <motion.a 
-                            href="#donate" 
-                            onClick={() => handleNavClick('donate')}
-                            whileTap={{ scale: 0.95 }}
-                            className='block text-center text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 border-2'
-                            style={{ 
-                                backgroundColor: 'var(--navy-blue)',
-                                borderColor: 'var(--navy-blue)'
-                            }}
+                        <div className='space-y-3'>
+                            <motion.a 
+                                href="#portal" 
+                                whileTap={{ scale: 0.95 }}
+                                className='block text-center text-navy-blue px-8 py-3 rounded-full font-semibold transition-all duration-300 border-2 bg-white'
+                                style={{ 
+                                    color: 'var(--navy-blue)',
+                                    borderColor: 'var(--navy-blue)'
+                                }}
+                                onTouchStart={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'var(--navy-blue)';
+                                    e.currentTarget.style.color = 'white';
+                                }}
+                                onTouchEnd={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'white';
+                                    e.currentTarget.style.color = 'var(--navy-blue)';
+                                }}
+                            >
+                                Access Portal
+                            </motion.a>
+                            <motion.a 
+                                href="#donate" 
+                                onClick={() => handleNavClick('donate')}
+                                whileTap={{ scale: 0.95 }}
+                                className='block text-center text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 border-2'
+                                style={{ 
+                                    backgroundColor: 'var(--navy-blue)',
+                                    borderColor: 'var(--navy-blue)'
+                                }}
                             onTouchStart={(e) => {
                                 e.currentTarget.style.backgroundColor = 'white';
                                 e.currentTarget.style.color = 'var(--navy-blue)';
@@ -199,6 +239,7 @@ const Navbar = ({ activeSection, setActiveSection }) => {
                         >
                             Donate
                         </motion.a>
+                        </div>
                     </div>
                 </motion.div>
             )}
