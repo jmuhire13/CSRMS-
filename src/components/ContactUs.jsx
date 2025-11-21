@@ -106,7 +106,7 @@ const ContactUs = ({ setActiveSection }) => {
               {/* Contact Details */}
               <div className='space-y-6 mb-8'>
                 <div className='flex items-start gap-4'>
-                  <div className='w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
+                  <div className='w-12 h-12 rounded-full flex items-center justify-center shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
                     <FaMapMarkerAlt className='text-white text-xl' />
                   </div>
                   <div>
@@ -120,7 +120,7 @@ const ContactUs = ({ setActiveSection }) => {
                 </div>
 
                 <div className='flex items-start gap-4'>
-                  <div className='w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
+                  <div className='w-12 h-12 rounded-full flex items-center justify-center shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
                     <FaEnvelope className='text-white text-xl' />
                   </div>
                   <div>
@@ -134,7 +134,7 @@ const ContactUs = ({ setActiveSection }) => {
                 </div>
 
                 <div className='flex items-start gap-4'>
-                  <div className='w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
+                  <div className='w-12 h-12 rounded-full flex items-center justify-center shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
                     <FaPhone className='text-white text-xl' />
                   </div>
                   <div>
