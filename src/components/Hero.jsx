@@ -1,13 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'motion/react'
 import heroImage from '../assets/heroImage.jpg' // Ensure you have an appropriate image in this path
 
 const Hero = () => {
+  const [isLearnMoreClicked, setIsLearnMoreClicked] = useState(false)
+  
   const scrollToContent = () => {
+    setIsLearnMoreClicked(true)
     const contentSection = document.getElementById('content')
     if (contentSection) {
       contentSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
+    // Reset the button state after a brief moment
+    setTimeout(() => setIsLearnMoreClicked(false), 2000)
   }
 
   return (
@@ -69,16 +74,11 @@ const Hero = () => {
                   onClick={scrollToContent}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className='px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold text-white transition w-full sm:w-auto text-base sm:text-lg shadow-lg hover:shadow-xl'
-                  style={{ backgroundColor: 'var(--navy-blue)' }}
-                >
-                  Get Started
-                </motion.button>
-                <motion.button
-                  onClick={scrollToContent}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className='px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold border-2 transition w-full sm:w-auto text-base sm:text-lg text-white border-white hover:bg-white hover:text-navy-blue shadow-lg hover:shadow-xl'
+                  className={`px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold border-2 transition w-full sm:w-auto text-base sm:text-lg shadow-lg hover:shadow-xl ${
+                    isLearnMoreClicked 
+                      ? 'bg-white text-navy-blue border-white' 
+                      : 'text-black bg-navy-blue border-white hover:bg-white hover:text-navy-blue'
+                  }`}
                   style={{ borderColor: 'white' }}
                 >
                   Learn More

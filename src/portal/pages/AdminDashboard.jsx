@@ -22,8 +22,17 @@ import { useUser } from '../context/UserContext'
 
 const AdminDashboard = () => {
   const { user } = useUser()
-  const [activeTab, setActiveTab] = useState('overview')
+  const [activeTab, setActiveTab] = useState('dashboard')
   const [notifications, setNotifications] = useState([])
+
+  // Navigation tabs
+  const navigationTabs = [
+    { id: 'dashboard', label: 'Dashboard', icon: FaUsers },
+    { id: 'user-management', label: 'User Management', icon: FaUsers },
+    { id: 'resource-management', label: 'Resource Management', icon: FaBuilding },
+    { id: 'reports', label: 'Reports & Analytics', icon: FaChartLine },
+    { id: 'settings', label: 'System Settings', icon: FaCog }
+  ]
 
   // Simulate real-time data updates
   useEffect(() => {
@@ -49,54 +58,13 @@ const AdminDashboard = () => {
     activeChildren: 892,
     activeCases: 245,
     socialWorkers: 34,
-    caregivers: 567,
-    ngoPartners: 18,
-    donors: 89,
-    totalDonations: 1250000,
-    monthlyDonations: 185000,
-    resourcesDistributed: 1580,
-    successRate: 94.2
+    totalResources: 89500,
+    pendingApprovals: 12,
+    completedCases: 678
   }
 
-  // Recent activities
-  const recentActivities = [
-    {
-      id: 1,
-      type: 'registration',
-      message: 'New child registered by Marie Uwimana',
-      location: 'Kigali District',
-      timestamp: '2 hours ago',
-      status: 'completed'
-    },
-    {
-      id: 2,
-      type: 'resource',
-      message: 'Emergency food package distributed',
-      location: 'Musanze District',
-      timestamp: '4 hours ago',
-      status: 'completed'
-    },
-    {
-      id: 3,
-      type: 'donor',
-      message: 'New monthly donor registered',
-      location: 'Online Platform',
-      timestamp: '6 hours ago',
-      status: 'active'
-    },
-    {
-      id: 4,
-      type: 'alert',
-      message: 'Critical case requires immediate attention',
-      location: 'Muhanga District',
-      timestamp: '8 hours ago',
-      status: 'pending'
-    }
-  ]
-
-  // System health metrics
+  // System health
   const systemHealth = {
-    serverStatus: 'operational',
     databaseHealth: 98.5,
     responseTime: 245, // ms
     uptime: 99.8,
@@ -111,6 +79,38 @@ const AdminDashboard = () => {
     { name: 'Huye', children: 156, workers: 4, completion: 94 },
     { name: 'Rubavu', children: 143, workers: 3, completion: 87 },
     { name: 'Others', children: 129, workers: 1, completion: 85 }
+  ]
+
+  // Recent activities
+  const recentActivities = [
+    {
+      id: 1,
+      user: 'Jean Uwimana',
+      action: 'Registered new child in Kigali district',
+      timestamp: '2 hours ago',
+      status: 'completed'
+    },
+    {
+      id: 2,
+      user: 'Marie Mukamana',
+      action: 'Updated resource inventory',
+      timestamp: '4 hours ago',
+      status: 'completed'
+    },
+    {
+      id: 3,
+      user: 'Paul Nkurunziza',
+      action: 'Case assessment pending review',
+      timestamp: '6 hours ago',
+      status: 'pending'
+    },
+    {
+      id: 4,
+      user: 'Grace Uwase',
+      action: 'Monthly report generated',
+      timestamp: '1 day ago',
+      status: 'info'
+    }
   ]
 
   const StatCard = ({ title, value, icon: Icon, trend, color = 'var(--navy-blue)', subtitle }) => (
@@ -149,22 +149,18 @@ const AdminDashboard = () => {
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
-      className="flex items-center p-4 rounded-lg border-l-4 mb-3"
-      style={{ 
-        backgroundColor: 'var(--off-white)', 
-        borderColor: activity.status === 'pending' ? '#f59e0b' : 
-                      activity.status === 'completed' ? '#10b981' : 'var(--navy-blue)'
-      }}
+      transition={{ duration: 0.3 }}
+      className="flex items-center justify-between p-3 rounded-lg"
+      style={{ backgroundColor: 'var(--off-white)' }}
     >
       <div className="flex-1">
-        <p className="font-semibold text-sm" style={{ color: 'var(--navy-blue)' }}>
-          {activity.message}
+        <p className="text-sm font-semibold" style={{ color: 'var(--navy-blue)' }}>
+          {activity.user}
         </p>
-        <div className="flex items-center gap-4 mt-1">
-          <span className="text-xs flex items-center gap-1" style={{ color: 'var(--para)' }}>
-            <FaMapMarkerAlt size={10} />
-            {activity.location}
-          </span>
+        <p className="text-xs mb-1" style={{ color: 'var(--para)' }}>
+          {activity.action}
+        </p>
+        <div className="flex items-center gap-2">
           <span className="text-xs" style={{ color: 'var(--para)' }}>
             {activity.timestamp}
           </span>
@@ -179,131 +175,134 @@ const AdminDashboard = () => {
     </motion.div>
   )
 
-  return (
-    <div className="p-6 max-w-7xl mx-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
-            System Administrator Dashboard
-          </h1>
-          <p className="mt-2" style={{ color: 'var(--para)' }}>
-            Welcome back, {user?.name || 'System Admin'}. Here's your system overview.
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white portal-button"
-            style={{ backgroundColor: 'var(--navy-blue)' }}
-          >
-            <FaDownload size={16} />
-            Export Report
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold border-2 portal-button"
-            style={{ 
-              color: 'var(--navy-blue)', 
-              borderColor: 'var(--navy-blue)',
-              backgroundColor: 'transparent'
-            }}
-          >
-            <FaCog size={16} />
-            Settings
-          </motion.button>
-        </div>
-      </div>
+  // Function to render content based on active tab
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return renderDashboardContent()
+      case 'user-management':
+        return renderUserManagementContent()
+      case 'resource-management':
+        return renderResourceManagementContent()
+      case 'reports':
+        return renderReportsContent()
+      case 'settings':
+        return renderSettingsContent()
+      default:
+        return renderDashboardContent()
+    }
+  }
 
-      {/* System Health Alert */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-6 p-4 rounded-lg border-l-4 flex items-center justify-between"
-        style={{ backgroundColor: '#dcfce7', borderColor: '#10b981' }}
-      >
-        <div className="flex items-center gap-3">
-          <FaCheckCircle className="text-green-600" size={20} />
-          <div>
-            <p className="font-semibold text-green-800">All Systems Operational</p>
-            <p className="text-sm text-green-700">
-              Server uptime: {systemHealth.uptime}% | Response time: {systemHealth.responseTime}ms | {systemHealth.activeUsers} active users
-            </p>
+  // Dashboard Content (existing overview)
+  const renderDashboardContent = () => {
+    return (
+      <div>
+        {/* System Health Alert */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-6 p-4 rounded-lg border-l-4 flex items-center justify-between"
+          style={{ backgroundColor: '#dcfce7', borderColor: '#10b981' }}
+        >
+          <div className="flex items-center gap-3">
+            <FaCheckCircle className="text-green-600" size={20} />
+            <div>
+              <p className="font-semibold text-green-800">All Systems Operational</p>
+              <p className="text-sm text-green-700">
+                Server uptime: {systemHealth.uptime}% | Response time: {systemHealth.responseTime}ms | {systemHealth.activeUsers} active users
+              </p>
+            </div>
           </div>
+          <span className="text-sm text-green-600">Last checked: 2 min ago</span>
+        </motion.div>
+
+        {/* Key Metrics Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+          <StatCard
+            title="Total Children"
+            value={systemStats.totalChildren}
+            icon={FaChild}
+            trend={5.2}
+            subtitle="Active in system"
+          />
+          <StatCard
+            title="Active Cases"
+            value={systemStats.activeCases}
+            icon={FaHandsHelping}
+            trend={-2.1}
+            color="#f59e0b"
+            subtitle="Need attention"
+          />
+          <StatCard
+            title="Social Workers"
+            value={systemStats.socialWorkers}
+            icon={FaUsers}
+            trend={8.3}
+            color="#10b981"
+            subtitle="Field staff"
+          />
+          <StatCard
+            title="Total Resources"
+            value={`$${(systemStats.totalResources / 1000).toFixed(1)}k`}
+            icon={FaDonate}
+            trend={12.7}
+            color="#8b5cf6"
+            subtitle="Available funds"
+          />
         </div>
-        <span className="text-sm text-green-600">Last checked: 2 min ago</span>
-      </motion.div>
 
-      {/* Key Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
-        <StatCard
-          title="Total Children"
-          value={systemStats.totalChildren}
-          icon={FaChild}
-          trend={5.2}
-          subtitle="Active in system"
-        />
-        <StatCard
-          title="Active Cases"
-          value={systemStats.activeCases}
-          icon={FaHandsHelping}
-          trend={-2.1}
-          color="#f59e0b"
-          subtitle="Require attention"
-        />
-        <StatCard
-          title="Social Workers"
-          value={systemStats.socialWorkers}
-          icon={FaUsers}
-          trend={12.5}
-          color="#10b981"
-          subtitle="Field operatives"
-        />
-        <StatCard
-          title="Total Donations"
-          value={`$${Math.round(systemStats.totalDonations / 1000)}k`}
-          icon={FaDonate}
-          trend={18.3}
-          color="#8b5cf6"
-          subtitle="This month: $185k"
-        />
-      </div>
-
-      {/* Secondary Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <StatCard
-          title="NGO Partners"
-          value={systemStats.ngoPartners}
-          icon={FaBuilding}
-          trend={8.1}
-          subtitle="Active partnerships"
-        />
-        <StatCard
-          title="Success Rate"
-          value={`${systemStats.successRate}%`}
-          icon={FaArrowUp}
-          trend={1.5}
-          color="#10b981"
-          subtitle="Case completion"
-        />
-        <StatCard
-          title="Resources Distributed"
-          value={systemStats.resourcesDistributed}
-          icon={FaHandsHelping}
-          trend={15.2}
-          subtitle="This month"
-        />
-      </div>
-
-      {/* Content Tabs */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Recent Activities */}
-        <div className="lg:col-span-2">
-          <div className="rounded-xl shadow-sm border p-6" style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}>
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* District Overview */}
+          <div className="lg:col-span-2 rounded-xl shadow-sm border p-6" style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}>
             <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
+                District Overview
+              </h2>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="text-sm font-semibold flex items-center gap-1"
+                style={{ color: 'var(--navy-blue)' }}
+              >
+                <FaMapMarkerAlt size={14} />
+                View Map
+              </motion.button>
+            </div>
+            <div className="space-y-3">
+              {districtData.map((district, index) => (
+                <motion.div
+                  key={district.name}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="flex items-center justify-between p-3 rounded-lg"
+                  style={{ backgroundColor: 'var(--off-white)' }}
+                >
+                  <div>
+                    <p className="font-semibold" style={{ color: 'var(--navy-blue)' }}>
+                      {district.name}
+                    </p>
+                    <p className="text-xs" style={{ color: 'var(--para)' }}>
+                      {district.children} children • {district.workers} workers
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm font-semibold" style={{ color: district.completion > 90 ? '#10b981' : '#f59e0b' }}>
+                      {district.completion}%
+                    </p>
+                    <p className="text-xs" style={{ color: 'var(--para)' }}>
+                      completion
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Activities */}
+          <div className="rounded-xl shadow-sm border p-6" style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}>
+            <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
                 Recent System Activities
               </h2>
@@ -324,73 +323,213 @@ const AdminDashboard = () => {
             </div>
           </div>
         </div>
+      </div>
+    )
+  }
 
-        {/* District Overview */}
-        <div>
-          <div className="rounded-xl shadow-sm border p-6 mb-6" style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
-                District Overview
-              </h2>
-            </div>
-            <div className="space-y-4">
-              {districtData.map((district, index) => (
-                <motion.div
-                  key={district.name}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-center justify-between p-3 rounded-lg"
-                  style={{ backgroundColor: 'var(--off-white)' }}
-                >
-                  <div>
-                    <p className="font-semibold text-sm" style={{ color: 'var(--navy-blue)' }}>
-                      {district.name}
-                    </p>
-                    <p className="text-xs" style={{ color: 'var(--para)' }}>
-                      {district.children} children • {district.workers} workers
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-sm font-semibold" style={{ color: district.completion > 90 ? '#10b981' : '#f59e0b' }}>
-                      {district.completion}%
-                    </p>
-                    <p className="text-xs" style={{ color: 'var(--para)' }}>
-                      completion
-                    </p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="rounded-xl shadow-sm border p-6" style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}>
-            <h2 className="text-xl font-bold font-secondary mb-4" style={{ color: 'var(--navy-blue)' }}>
-              Quick Actions
+  // User Management Content
+  const renderUserManagementContent = () => {
+    return (
+      <div className="space-y-6">
+        <div className="bg-white rounded-xl shadow-sm border p-6" style={{ borderColor: 'var(--pale-blue)' }}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
+              User Management
             </h2>
-            <div className="space-y-3">
-              {[
-                { icon: FaPlus, label: 'Add New User', color: 'var(--navy-blue)' },
-                { icon: FaUserCog, label: 'Manage Permissions', color: '#f59e0b' },
-                { icon: FaChartLine, label: 'Generate Report', color: '#10b981' },
-                { icon: FaCog, label: 'System Settings', color: '#8b5cf6' }
-              ].map((action, index) => (
-                <motion.button
-                  key={action.label}
-                  whileHover={{ scale: 1.02, x: 5 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full flex items-center gap-3 p-3 rounded-lg text-left portal-button"
-                  style={{ backgroundColor: 'var(--off-white)' }}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white"
+              style={{ backgroundColor: 'var(--navy-blue)' }}
+            >
+              <FaPlus size={16} />
+              Add New User
+            </motion.button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <StatCard title="Total Users" value="127" icon={FaUsers} color="#3b82f6" />
+            <StatCard title="Active Users" value="98" icon={FaCheckCircle} color="#10b981" />
+            <StatCard title="Pending Approvals" value="12" icon={FaExclamationTriangle} color="#f59e0b" />
+          </div>
+          <div className="text-center py-8" style={{ color: 'var(--para)' }}>
+            <FaUsers size={48} className="mx-auto mb-4 opacity-50" />
+            <p>User management interface will be implemented here.</p>
+            <p className="text-sm">Features: Add/Edit users, Role management, Permissions</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Resource Management Content
+  const renderResourceManagementContent = () => {
+    return (
+      <div className="space-y-6">
+        <div className="bg-white rounded-xl shadow-sm border p-6" style={{ borderColor: 'var(--pale-blue)' }}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
+              Resource Management
+            </h2>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white"
+              style={{ backgroundColor: 'var(--navy-blue)' }}
+            >
+              <FaPlus size={16} />
+              Add Resource
+            </motion.button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <StatCard title="Total Resources" value="847" icon={FaBuilding} color="#8b5cf6" />
+            <StatCard title="Available" value="623" icon={FaCheckCircle} color="#10b981" />
+            <StatCard title="Allocated" value="187" icon={FaHandsHelping} color="#f59e0b" />
+            <StatCard title="Pending" value="37" icon={FaExclamationTriangle} color="#ef4444" />
+          </div>
+          <div className="text-center py-8" style={{ color: 'var(--para)' }}>
+            <FaBuilding size={48} className="mx-auto mb-4 opacity-50" />
+            <p>Resource management interface will be implemented here.</p>
+            <p className="text-sm">Features: Inventory tracking, Resource allocation, Distribution management</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // Reports & Analytics Content
+  const renderReportsContent = () => {
+    return (
+      <div className="space-y-6">
+        <div className="bg-white rounded-xl shadow-sm border p-6" style={{ borderColor: 'var(--pale-blue)' }}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
+              Reports & Analytics
+            </h2>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white"
+              style={{ backgroundColor: 'var(--navy-blue)' }}
+            >
+              <FaDownload size={16} />
+              Generate Report
+            </motion.button>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <StatCard title="Monthly Reports" value="24" icon={FaChartLine} color="#10b981" />
+            <StatCard title="Data Points" value="15.7K" icon={FaChartLine} color="#3b82f6" />
+            <StatCard title="Analytics Views" value="342" icon={FaEye} color="#8b5cf6" />
+          </div>
+          <div className="text-center py-8" style={{ color: 'var(--para)' }}>
+            <FaChartLine size={48} className="mx-auto mb-4 opacity-50" />
+            <p>Advanced analytics and reporting interface will be implemented here.</p>
+            <p className="text-sm">Features: Custom reports, Data visualization, Performance metrics</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  // System Settings Content
+  const renderSettingsContent = () => {
+    return (
+      <div className="space-y-6">
+        <div className="bg-white rounded-xl shadow-sm border p-6" style={{ borderColor: 'var(--pale-blue)' }}>
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
+              System Settings
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <StatCard title="Server Health" value="98.5%" icon={FaCheckCircle} color="#10b981" />
+            <StatCard title="Database Size" value="2.4GB" icon={FaCog} color="#8b5cf6" />
+            <StatCard title="Active Sessions" value="67" icon={FaUsers} color="#3b82f6" />
+          </div>
+          <div className="text-center py-8" style={{ color: 'var(--para)' }}>
+            <FaCog size={48} className="mx-auto mb-4 opacity-50" />
+            <p>System configuration and settings interface will be implemented here.</p>
+            <p className="text-sm">Features: Security settings, Backup configuration, System preferences</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
+            System Administrator
+          </h1>
+          <p className="mt-2" style={{ color: 'var(--para)' }}>
+            Welcome back, {user?.name || 'Admin'}. Manage your CSRMS platform.
+          </p>
+        </div>
+        <div className="flex items-center gap-3">
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white portal-button"
+            style={{ backgroundColor: 'var(--navy-blue)' }}
+          >
+            <FaDownload size={16} />
+            Export Report
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Navigation Sidebar */}
+      <div className="flex gap-8">
+        {/* Sidebar */}
+        <div className="w-80 shrink-0">
+          <div className="bg-white rounded-xl shadow-sm border" style={{ borderColor: 'var(--pale-blue)' }}>
+            {/* User Profile Section */}
+            <div className="p-6 border-b" style={{ borderColor: 'var(--pale-blue)' }}>
+              <div className="flex items-center gap-3">
+                <div 
+                  className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg"
+                  style={{ backgroundColor: 'var(--navy-blue)' }}
                 >
-                  <action.icon size={16} style={{ color: action.color }} />
-                  <span className="font-semibold" style={{ color: 'var(--navy-blue)' }}>
-                    {action.label}
-                  </span>
+                  <FaUserCog />
+                </div>
+                <div>
+                  <h3 className="font-semibold" style={{ color: 'var(--navy-blue)' }}>System Admin</h3>
+                  <p className="text-sm" style={{ color: 'var(--para)' }}>Admin</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Navigation Menu */}
+            <nav className="p-4">
+              {navigationTabs.map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`w-full flex items-center gap-3 p-3 rounded-lg text-left mb-2 transition-all font-medium ${
+                    activeTab === tab.id 
+                      ? 'text-white' 
+                      : 'hover:bg-gray-50'
+                  }`}
+                  style={{
+                    backgroundColor: activeTab === tab.id ? 'var(--navy-blue)' : 'transparent',
+                    color: activeTab === tab.id ? 'white' : 'var(--navy-blue)'
+                  }}
+                >
+                  <tab.icon size={18} />
+                  <span>{tab.label}</span>
                 </motion.button>
               ))}
-            </div>
+            </nav>
           </div>
+        </div>
+
+        {/* Main Content Area */}
+        <div className="flex-1">
+          {renderTabContent()}
         </div>
       </div>
     </div>
