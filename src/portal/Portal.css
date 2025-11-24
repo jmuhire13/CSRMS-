@@ -1,0 +1,220 @@
+/* Portal-specific styles */
+
+/* Portal mode body modifications */
+.portal-mode {
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Portal container */
+.portal-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Portal loading spinner */
+.portal-loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Portal transitions */
+.portal-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.portal-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.portal-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.portal-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Portal sidebar scrollbar */
+.portal-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.portal-sidebar::-webkit-scrollbar-track {
+  background: var(--off-white);
+}
+
+.portal-sidebar::-webkit-scrollbar-thumb {
+  background: var(--pale-blue);
+  border-radius: 3px;
+}
+
+.portal-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--slate-blue);
+}
+
+/* Portal card shadows and hover effects */
+.portal-card {
+  transition: all 0.3s ease;
+}
+
+.portal-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(44, 62, 95, 0.1);
+}
+
+/* Portal button styles */
+.portal-button {
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.portal-button:hover::before {
+  left: 100%;
+}
+
+/* Portal form styles */
+.portal-form-input {
+  transition: border-color 0.2s ease;
+}
+
+.portal-form-input:focus {
+  border-color: var(--navy-blue);
+  box-shadow: 0 0 0 3px rgba(44, 62, 95, 0.1);
+}
+
+/* Portal responsive utilities */
+.portal-mobile-only {
+  display: block;
+}
+
+.portal-desktop-only {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .portal-mobile-only {
+    display: none;
+  }
+  
+  .portal-desktop-only {
+    display: block;
+  }
+}
+
+/* Portal grid layouts */
+.portal-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .portal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .portal-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Portal status indicators */
+.portal-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.portal-status-success {
+  background-color: #dcfce7;
+  color: #166534;
+}
+
+.portal-status-warning {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.portal-status-error {
+  background-color: #fecaca;
+  color: #991b1b;
+}
+
+.portal-status-info {
+  background-color: var(--beige-accent);
+  color: var(--navy-blue);
+}
+
+/* Portal animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.portal-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.portal-slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* Portal notification styles */
+.portal-notification {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  background-color: var(--white);
+  border-left: 4px solid var(--navy-blue);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-out;
+}
+
+.portal-notification.show {
+  transform: translateX(0);
+}

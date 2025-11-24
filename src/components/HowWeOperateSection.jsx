@@ -182,7 +182,7 @@ const HowWeOperateSection = ({ setActiveSection }) => {
             </p>
             
             <motion.a
-              href="#portal"
+              href="/portal"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className='inline-block px-8 py-4 rounded-full font-semibold text-white transition text-lg shadow-lg hover:shadow-xl mb-8'

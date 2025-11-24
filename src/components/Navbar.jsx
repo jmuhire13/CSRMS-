@@ -123,7 +123,11 @@ const Navbar = ({ activeSection, setActiveSection }) => {
                 {/* Portal and Donate buttons - Desktop */}
                 <div className='hidden lg:flex items-center gap-3'>
                     <motion.a 
-                        href="#portal" 
+                        href="/portal"
+                        onClick={(e) => {
+                            e.preventDefault()
+                            window.location.href = '/portal'
+                        }} 
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         className='text-navy-blue px-6 py-3 rounded-full font-semibold transition-all duration-300 hover:shadow-lg border-2 bg-white'
@@ -201,7 +205,11 @@ const Navbar = ({ activeSection, setActiveSection }) => {
                         </nav>
                         <div className='space-y-3'>
                             <motion.a 
-                                href="#portal" 
+                                href="/portal"
+                                onClick={(e) => {
+                                    e.preventDefault()
+                                    window.location.href = '/portal'
+                                }} 
                                 whileTap={{ scale: 0.95 }}
                                 className='block text-center text-navy-blue px-8 py-3 rounded-full font-semibold transition-all duration-300 border-2 bg-white'
                                 style={{ 

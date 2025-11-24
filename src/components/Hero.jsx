@@ -53,7 +53,11 @@ const Hero = () => {
               {/* CTAs */}
               <div className='flex flex-col sm:flex-row gap-3 sm:gap-4'>
                 <motion.a
-                  href="#portal"
+                  href="/portal"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    window.location.href = '/portal'
+                  }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className='px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold transition w-full sm:w-auto text-base sm:text-lg shadow-lg hover:shadow-xl text-center text-navy-blue bg-white border-2'

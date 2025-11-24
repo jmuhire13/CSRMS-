@@ -431,7 +431,7 @@ const GovernanceTeamSection = ({ setActiveSection }) => {
 
             <div className='flex flex-col sm:flex-row gap-4 justify-center items-center'>
               <motion.a
-                href="#portal"
+                href="/portal"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className='px-8 py-4 rounded-full font-semibold transition text-lg shadow-lg hover:shadow-xl text-center text-navy-blue bg-white border-2'
