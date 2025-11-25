@@ -28,6 +28,7 @@ const allowedOrigins = [
   'http://localhost:5174',
   'http://localhost:5175',
   'http://localhost:4173',
+  'https://csrms-2.vercel.app',
   process.env.FRONTEND_URL
 ].filter(Boolean); // Remove undefined values
 
@@ -36,9 +37,18 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or Postman)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1 || allowedOrigins.some(allowed => origin.startsWith(allowed))) {
+    // Check if origin matches any allowed origin or starts with allowed pattern
+    const isAllowed = allowedOrigins.some(allowed => {
+      if (origin === allowed) return true;
+      // Allow any Vercel deployment (csrms-*.vercel.app)
+      if (origin.includes('.vercel.app') && origin.includes('csrms')) return true;
+      return false;
+    });
+    
+    if (isAllowed) {
       callback(null, true);
     } else {
+      console.log('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
