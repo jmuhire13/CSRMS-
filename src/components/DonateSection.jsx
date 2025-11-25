@@ -1,8 +1,218 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'motion/react'
 import donateImage from '../assets/2.jpeg'
 
 const DonateSection = ({ setActiveSection }) => {
+  const [showDonationForm, setShowDonationForm] = useState(false)
+  const [donationData, setDonationData] = useState({
+    amount: '',
+    type: 'one-time',
+    program: 'general',
+    name: '',
+    email: '',
+    phone: '',
+    paymentMethod: 'card'
+  })
+
+  const handleInputChange = (e) => {
+    setDonationData({ ...donationData, [e.target.name]: e.target.value })
+  }
+
+  const handleDonationSubmit = (e) => {
+    e.preventDefault()
+    alert(`Thank you ${donationData.name}! Your ${donationData.type} donation of $${donationData.amount} for ${donationData.program} has been processed. You will receive a confirmation email shortly.`)
+    setShowDonationForm(false)
+    setDonationData({ amount: '', type: 'one-time', program: 'general', name: '', email: '', phone: '', paymentMethod: 'card' })
+  }
+
+  if (showDonationForm) {
+    return (
+      <div id='donate' style={{ backgroundColor: 'var(--white)' }}>
+        {/* Back Button */}
+        <div className='px-4 sm:px-8 lg:px-12 pt-24 sm:pt-28 pb-4'>
+          <motion.button
+            onClick={() => setShowDonationForm(false)}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className='px-6 py-3 rounded-full font-semibold text-white transition shadow-lg hover:shadow-xl'
+            style={{ backgroundColor: 'var(--navy-blue)' }}
+          >
+            ← Back to Donation Info
+          </motion.button>
+        </div>
+
+        {/* Donation Form */}
+        <div className='min-h-screen px-4 py-8' style={{ backgroundColor: 'var(--off-white)' }}>
+          <div className='container mx-auto max-w-2xl'>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className='bg-white rounded-2xl shadow-lg p-8'
+            >
+              <h2 className='text-3xl font-bold font-secondary mb-6 text-center' style={{ color: 'var(--navy-blue)' }}>
+                Complete Your Donation
+              </h2>
+
+              <form onSubmit={handleDonationSubmit} className='space-y-6'>
+                {/* Amount Selection */}
+                <div>
+                  <label className='block text-sm font-semibold mb-3' style={{ color: 'var(--navy-blue)' }}>Donation Amount ($)</label>
+                  <div className='grid grid-cols-3 gap-3 mb-3'>
+                    {[25, 50, 100, 250, 500, 1000].map(amount => (
+                      <button
+                        key={amount}
+                        type='button'
+                        onClick={() => setDonationData({...donationData, amount: amount.toString()})}
+                        className={`py-2 px-4 rounded-lg border-2 font-semibold transition ${
+                          donationData.amount === amount.toString() 
+                            ? 'text-white' 
+                            : 'text-gray-700 hover:border-blue-300'
+                        }`}
+                        style={{
+                          backgroundColor: donationData.amount === amount.toString() ? 'var(--navy-blue)' : 'transparent',
+                          borderColor: donationData.amount === amount.toString() ? 'var(--navy-blue)' : '#d1d5db'
+                        }}
+                      >
+                        ${amount}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    type='number'
+                    name='amount'
+                    value={donationData.amount}
+                    onChange={handleInputChange}
+                    placeholder='Enter custom amount'
+                    className='w-full p-3 border-2 rounded-lg focus:outline-none focus:border-blue-500'
+                    required
+                  />
+                </div>
+
+                {/* Donation Type */}
+                <div>
+                  <label className='block text-sm font-semibold mb-3' style={{ color: 'var(--navy-blue)' }}>Donation Type</label>
+                  <select
+                    name='type'
+                    value={donationData.type}
+                    onChange={handleInputChange}
+                    className='w-full p-3 border-2 rounded-lg focus:outline-none focus:border-blue-500'
+                  >
+                    <option value='one-time'>One-Time Donation</option>
+                    <option value='monthly'>Monthly Recurring</option>
+                    <option value='quarterly'>Quarterly</option>
+                    <option value='annually'>Annual</option>
+                  </select>
+                </div>
+
+                {/* Program Selection */}
+                <div>
+                  <label className='block text-sm font-semibold mb-3' style={{ color: 'var(--navy-blue)' }}>Support Program</label>
+                  <select
+                    name='program'
+                    value={donationData.program}
+                    onChange={handleInputChange}
+                    className='w-full p-3 border-2 rounded-lg focus:outline-none focus:border-blue-500'
+                  >
+                    <option value='general'>General Support</option>
+                    <option value='healthcare'>Healthcare & Medical</option>
+                    <option value='nutrition'>Nutrition Programs</option>
+                    <option value='education'>Education Support</option>
+                    <option value='psychosocial'>Psychosocial Care</option>
+                    <option value='emergency'>Emergency Relief</option>
+                  </select>
+                </div>
+
+                {/* Personal Information */}
+                <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+                  <div>
+                    <label className='block text-sm font-semibold mb-2' style={{ color: 'var(--navy-blue)' }}>Full Name</label>
+                    <input
+                      type='text'
+                      name='name'
+                      value={donationData.name}
+                      onChange={handleInputChange}
+                      className='w-full p-3 border-2 rounded-lg focus:outline-none focus:border-blue-500'
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className='block text-sm font-semibold mb-2' style={{ color: 'var(--navy-blue)' }}>Email</label>
+                    <input
+                      type='email'
+                      name='email'
+                      value={donationData.email}
+                      onChange={handleInputChange}
+                      className='w-full p-3 border-2 rounded-lg focus:outline-none focus:border-blue-500'
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className='block text-sm font-semibold mb-2' style={{ color: 'var(--navy-blue)' }}>Phone Number</label>
+                  <input
+                    type='tel'
+                    name='phone'
+                    value={donationData.phone}
+                    onChange={handleInputChange}
+                    className='w-full p-3 border-2 rounded-lg focus:outline-none focus:border-blue-500'
+                    required
+                  />
+                </div>
+
+                {/* Payment Method */}
+                <div>
+                  <label className='block text-sm font-semibold mb-3' style={{ color: 'var(--navy-blue)' }}>Payment Method</label>
+                  <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
+                    {[
+                      { value: 'card', label: 'Credit Card' },
+                      { value: 'bank', label: 'Bank Transfer' },
+                      { value: 'paypal', label: 'PayPal' },
+                      { value: 'mobile', label: 'Mobile Money' }
+                    ].map(method => (
+                      <button
+                        key={method.value}
+                        type='button'
+                        onClick={() => setDonationData({...donationData, paymentMethod: method.value})}
+                        className={`py-2 px-3 rounded-lg border-2 font-semibold transition text-sm ${
+                          donationData.paymentMethod === method.value 
+                            ? 'text-white' 
+                            : 'text-gray-700 hover:border-blue-300'
+                        }`}
+                        style={{
+                          backgroundColor: donationData.paymentMethod === method.value ? 'var(--navy-blue)' : 'transparent',
+                          borderColor: donationData.paymentMethod === method.value ? 'var(--navy-blue)' : '#d1d5db'
+                        }}
+                      >
+                        {method.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <motion.button
+                  type='submit'
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className='w-full py-4 rounded-lg font-semibold text-white text-lg transition shadow-lg hover:shadow-xl'
+                  style={{ backgroundColor: '#E74C3C' }}
+                >
+                  Donate ${donationData.amount || '0'} Now
+                </motion.button>
+
+                <p className='text-sm text-center' style={{ color: 'var(--para)' }}>
+                  🔒 Your donation is secure and encrypted. You'll receive a receipt via email.
+                </p>
+              </form>
+            </motion.div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div id='donate' style={{ backgroundColor: 'var(--white)' }}>
       {/* Back Button */}
@@ -158,6 +368,7 @@ const DonateSection = ({ setActiveSection }) => {
               </div>
               
               <motion.button
+                onClick={() => setShowDonationForm(true)}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className='px-10 py-4 rounded-full font-semibold text-white transition text-lg'

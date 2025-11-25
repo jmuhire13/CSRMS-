@@ -26,9 +26,21 @@ import { useUser } from '../context/UserContext'
 
 const CaregiverDashboard = () => {
   const { user } = useUser()
-  const [activeTab, setActiveTab] = useState('children')
+  const [activeTab, setActiveTab] = useState('dashboard')
   const [selectedChild, setSelectedChild] = useState(null)
   const [newMessage, setNewMessage] = useState('')
+
+  // Listen for tab changes from sidebar
+  useEffect(() => {
+    const handleTabChange = (event) => {
+      if (event.detail.role === 'caregiver') {
+        setActiveTab(event.detail.tab)
+      }
+    }
+
+    window.addEventListener('tabChange', handleTabChange)
+    return () => window.removeEventListener('tabChange', handleTabChange)
+  }, [])
 
   // Caregiver's children data
   const children = [
@@ -368,6 +380,12 @@ const CaregiverDashboard = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              const activeChild = children.find(child => child.status === 'active')
+              const workerName = activeChild ? activeChild.socialWorker : 'Marie Uwimana'
+              const workerPhone = activeChild ? activeChild.socialWorkerPhone : '+250 788 123 456'
+              alert(`Contacting your social worker...\n\nSocial Worker: ${workerName}\nPhone: ${workerPhone}\n\nYou can:\n• Call directly\n• Send a message\n• Schedule a meeting\n• Report an emergency`)
+            }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white portal-button"
             style={{ backgroundColor: 'var(--navy-blue)' }}
           >
@@ -377,6 +395,9 @@ const CaregiverDashboard = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              alert('Downloading family progress report...\n\nThis report includes:\n• Children\'s progress summaries\n• Recent activities and achievements\n• Upcoming appointments\n• Support received this month\n• Contact information\n\nReport will be saved as PDF.')
+            }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold border-2 portal-button"
             style={{ 
               color: 'var(--navy-blue)', 
@@ -423,40 +444,44 @@ const CaregiverDashboard = () => {
         />
       </div>
 
-      {/* Content Tabs */}
-      <div className="mb-6">
-        <div className="flex gap-1 p-1 rounded-lg" style={{ backgroundColor: 'var(--off-white)' }}>
-          {[
-            { id: 'children', label: 'My Children', icon: FaChild },
-            { id: 'messages', label: 'Messages', icon: FaComments },
-            { id: 'schedule', label: 'Schedule', icon: FaCalendarAlt }
-          ].map((tab) => (
-            <motion.button
-              key={tab.id}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition ${
-                activeTab === tab.id ? 'text-white' : ''
-              }`}
-              style={{ 
-                backgroundColor: activeTab === tab.id ? 'var(--navy-blue)' : 'transparent',
-                color: activeTab === tab.id ? 'white' : 'var(--navy-blue)'
-              }}
-            >
-              <tab.icon size={16} />
-              {tab.label}
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
       {/* Tab Content */}
-      {activeTab === 'children' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {children.map((child) => (
-            <ChildCard key={child.id} child={child} onClick={setSelectedChild} />
-          ))}
+      {(activeTab === 'dashboard' || activeTab === 'children') && (
+        <div>
+          {/* Content Tabs */}
+          <div className="mb-6">
+            <div className="flex gap-1 p-1 rounded-lg" style={{ backgroundColor: 'var(--off-white)' }}>
+              {[
+                { id: 'children', label: 'My Children', icon: FaChild },
+                { id: 'messages', label: 'Messages', icon: FaComments },
+                { id: 'schedule', label: 'Schedule', icon: FaCalendarAlt }
+              ].map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition ${
+                    activeTab === tab.id ? 'text-white' : ''
+                  }`}
+                  style={{ 
+                    backgroundColor: activeTab === tab.id ? 'var(--navy-blue)' : 'transparent',
+                    color: activeTab === tab.id ? 'white' : 'var(--navy-blue)'
+                  }}
+                >
+                  <tab.icon size={16} />
+                  {tab.label}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {(activeTab === 'dashboard' || activeTab === 'children') && (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {children.map((child) => (
+                <ChildCard key={child.id} child={child} onClick={setSelectedChild} />
+              ))}
+            </div>
+          )}
         </div>
       )}
 
@@ -489,6 +514,14 @@ const CaregiverDashboard = () => {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    if (newMessage.trim()) {
+                      alert(`Message sent to social worker: "${newMessage}"\n\nYour social worker will receive this message and respond as soon as possible.`)
+                      setNewMessage('')
+                    } else {
+                      alert('Please enter a message before sending.')
+                    }
+                  }}
                   className="px-4 py-2 rounded-lg text-white"
                   style={{ backgroundColor: 'var(--navy-blue)' }}
                 >
@@ -539,11 +572,34 @@ const CaregiverDashboard = () => {
                   { icon: FaBell, label: 'Request Emergency Help', color: '#dc2626' },
                   { icon: FaClipboardList, label: 'Update Child Info', color: 'var(--navy-blue)' },
                   { icon: FaDownload, label: 'Download Reports', color: '#ca8a04' }
-                ].map((action, index) => (
+                ].map((action, index) => {
+                  const handleActionClick = () => {
+                    switch(action.label) {
+                      case 'Call Social Worker':
+                        const activeChild = children.find(child => child.status === 'active')
+                        const workerPhone = activeChild ? activeChild.socialWorkerPhone : '+250 788 123 456'
+                        alert(`Calling your social worker...\n\nPhone: ${workerPhone}\n\nThis will initiate a direct call to discuss:\n• Your children's progress\n• Upcoming appointments\n• Any concerns or questions\n• Emergency situations`)
+                        break
+                      case 'Request Emergency Help':
+                        alert('Emergency help request system...\n\nSelect emergency type:\n• Medical emergency\n• Safety concern\n• Urgent resource need\n• Family crisis\n\nYour request will be prioritized and immediate assistance dispatched.')
+                        break
+                      case 'Update Child Info':
+                        alert('Child information update form...\n\nUpdate details about:\n• Health status changes\n• School progress\n• New needs or concerns\n• Family circumstances\n\nThis helps us provide better support.')
+                        break
+                      case 'Download Reports':
+                        alert('Downloading progress reports...\n\nAvailable reports:\n• Monthly progress summary\n• Individual child reports\n• Support services received\n• Upcoming appointments\n\nReports will be saved as PDF files.')
+                        break
+                      default:
+                        alert(`${action.label} functionality will be implemented.`)
+                    }
+                  }
+                  
+                  return (
                   <motion.button
                     key={action.label}
                     whileHover={{ scale: 1.02, x: 5 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={handleActionClick}
                     className="w-full flex items-center gap-3 p-3 rounded-lg text-left portal-button"
                     style={{ backgroundColor: 'var(--off-white)' }}
                   >
@@ -552,14 +608,15 @@ const CaregiverDashboard = () => {
                       {action.label}
                     </span>
                   </motion.button>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {activeTab === 'schedule' && (
+      {(activeTab === 'support' || activeTab === 'schedule') && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {children.map((child) => (
             <div key={child.id} className="rounded-xl shadow-sm border p-6" style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}>

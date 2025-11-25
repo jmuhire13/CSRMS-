@@ -29,8 +29,20 @@ import { useUser } from '../context/UserContext'
 
 const DonorDashboard = () => {
   const { user } = useUser()
-  const [activeTab, setActiveTab] = useState('overview')
+  const [activeTab, setActiveTab] = useState('dashboard')
   const [selectedTimeframe, setSelectedTimeframe] = useState('thisYear')
+
+  // Listen for tab changes from sidebar
+  useEffect(() => {
+    const handleTabChange = (event) => {
+      if (event.detail.role === 'donor') {
+        setActiveTab(event.detail.tab)
+      }
+    }
+
+    window.addEventListener('tabChange', handleTabChange)
+    return () => window.removeEventListener('tabChange', handleTabChange)
+  }, [])
 
   // Donor statistics
   const donorStats = {
@@ -380,6 +392,9 @@ const DonorDashboard = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              alert('Opening donation portal...\n\nDonation options:\n• One-time donation\n• Monthly recurring support\n• Sponsor a specific child\n• Emergency relief fund\n• Education support\n• Healthcare fund\n\nChoose amount and payment method to proceed.')
+            }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white portal-button"
             style={{ backgroundColor: 'var(--navy-blue)' }}
           >
@@ -389,6 +404,9 @@ const DonorDashboard = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              alert(`Downloading tax receipt...\n\nTax Year: 2024\nTotal Deductible: $${donorStats.thisYear}\n\nThis official receipt includes:\n• All qualifying donations\n• Organization tax ID\n• Donor information\n• IRS compliance details\n\nReceipt will be saved as PDF.`)
+            }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold border-2 portal-button"
             style={{ 
               color: 'var(--navy-blue)', 
@@ -461,36 +479,38 @@ const DonorDashboard = () => {
         </p>
       </div>
 
-      {/* Content Tabs */}
-      <div className="mb-6">
-        <div className="flex gap-1 p-1 rounded-lg" style={{ backgroundColor: 'var(--off-white)' }}>
-          {[
-            { id: 'overview', label: 'Impact Overview', icon: FaChartLine },
-            { id: 'children', label: 'Supported Children', icon: FaChild },
-            { id: 'history', label: 'Donation History', icon: FaCreditCard }
-          ].map((tab) => (
-            <motion.button
-              key={tab.id}
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition ${
-                activeTab === tab.id ? 'text-white' : ''
-              }`}
-              style={{ 
-                backgroundColor: activeTab === tab.id ? 'var(--navy-blue)' : 'transparent',
-                color: activeTab === tab.id ? 'white' : 'var(--navy-blue)'
-              }}
-            >
-              <tab.icon size={16} />
-              {tab.label}
-            </motion.button>
-          ))}
-        </div>
-      </div>
-
       {/* Tab Content */}
-      {activeTab === 'overview' && (
+      {(activeTab === 'dashboard' || activeTab === 'impact') && (
+        <div>
+          {/* Content Tabs */}
+          <div className="mb-6">
+            <div className="flex gap-1 p-1 rounded-lg" style={{ backgroundColor: 'var(--off-white)' }}>
+              {[
+                { id: 'overview', label: 'Impact Overview', icon: FaChartLine },
+                { id: 'children', label: 'Supported Children', icon: FaChild },
+                { id: 'history', label: 'Donation History', icon: FaCreditCard }
+              ].map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition ${
+                    activeTab === tab.id ? 'text-white' : ''
+                  }`}
+                  style={{ 
+                    backgroundColor: activeTab === tab.id ? 'var(--navy-blue)' : 'transparent',
+                    color: activeTab === tab.id ? 'white' : 'var(--navy-blue)'
+                  }}
+                >
+                  <tab.icon size={16} />
+                  {tab.label}
+                </motion.button>
+              ))}
+            </div>
+          </div>
+
+          {(activeTab === 'dashboard' || activeTab === 'impact' || activeTab === 'overview') && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <div className="rounded-xl shadow-sm border p-6 mb-6" style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}>
@@ -569,11 +589,35 @@ const DonorDashboard = () => {
                   { icon: FaCreditCard, label: 'Update Payment Method', color: 'var(--navy-blue)' },
                   { icon: FaDownload, label: 'Download Tax Receipt', color: '#ca8a04' },
                   { icon: FaHeart, label: 'Sponsor a Child', color: '#dc2626' }
-                ].map((action, index) => (
+                ].map((action, index) => {
+                  const handleActionClick = () => {
+                    switch(action.label) {
+                      case 'Make Quick Donation':
+                        alert('Quick donation options...\n\n• $25 - Nutrition package for 1 child\n• $50 - School supplies set\n• $100 - Medical checkup\n• $200 - Monthly support package\n• Custom amount\n\nSelect amount for instant donation.')
+                        break
+                      case 'View Impact Report':
+                        alert('Opening detailed impact report...\n\nYour contributions have supported:\n• 8 children directly\n• 15 families indirectly\n• 3 community programs\n• Healthcare for 25 children\n• Education for 12 children\n\nDetailed metrics and stories included.')
+                        break
+                      case 'Update Payment Method':
+                        alert('Payment method settings...\n\nCurrent method: Credit Card ending in 4532\n\nUpdate options:\n• Add new credit/debit card\n• Link bank account\n• PayPal integration\n• Cryptocurrency options\n• Modify recurring amounts')
+                        break
+                      case 'Download Tax Receipt':
+                        alert(`Tax documentation center...\n\nAvailable receipts:\n• 2024 YTD: $${donorStats.thisYear}\n• 2023 Full Year: $${donorStats.lastYear}\n• Monthly statements\n• Individual donation receipts\n\nAll IRS-compliant documentation.`)
+                        break
+                      case 'Sponsor a Child':
+                        alert('Child sponsorship program...\n\nBecome a dedicated sponsor:\n• Choose a specific child\n• Monthly commitment ($50-200)\n• Direct progress updates\n• Letter exchanges\n• Annual visit opportunities\n\nMake a lasting personal impact.')
+                        break
+                      default:
+                        alert(`${action.label} functionality will be implemented.`)
+                    }
+                  }
+                  
+                  return (
                   <motion.button
                     key={action.label}
                     whileHover={{ scale: 1.02, x: 5 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={handleActionClick}
                     className="w-full flex items-center gap-3 p-3 rounded-lg text-left portal-button"
                     style={{ backgroundColor: 'var(--off-white)' }}
                   >
@@ -582,10 +626,14 @@ const DonorDashboard = () => {
                       {action.label}
                     </span>
                   </motion.button>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>
+        </div>
+      )}
+
         </div>
       )}
 
@@ -597,7 +645,7 @@ const DonorDashboard = () => {
         </div>
       )}
 
-      {activeTab === 'history' && (
+      {(activeTab === 'donations' || activeTab === 'history') && (
         <div className="space-y-4">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>

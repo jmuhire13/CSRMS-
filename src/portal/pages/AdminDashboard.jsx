@@ -19,10 +19,23 @@ import {
   FaEdit
 } from 'react-icons/fa'
 import { useUser } from '../context/UserContext'
+import ResourceMatching from '../components/ResourceMatching'
 
 const AdminDashboard = () => {
   const { user } = useUser()
   const [activeTab, setActiveTab] = useState('dashboard')
+
+  // Listen for tab changes from sidebar
+  useEffect(() => {
+    const handleTabChange = (event) => {
+      if (event.detail.role === 'admin') {
+        setActiveTab(event.detail.tab)
+      }
+    }
+
+    window.addEventListener('tabChange', handleTabChange)
+    return () => window.removeEventListener('tabChange', handleTabChange)
+  }, [])
   const [notifications, setNotifications] = useState([])
 
   // Navigation tabs
@@ -113,13 +126,19 @@ const AdminDashboard = () => {
     }
   ]
 
-  const StatCard = ({ title, value, icon: Icon, trend, color = 'var(--navy-blue)', subtitle }) => (
+  const StatCard = ({ title, value, icon: Icon, trend, color = 'var(--navy-blue)', subtitle, onClick }) => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
-      className="p-6 rounded-xl shadow-sm border portal-card"
+      whileHover={{ scale: 1.02, y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      className="p-6 rounded-xl shadow-sm border portal-card cursor-pointer hover:shadow-md transition-all"
       style={{ backgroundColor: 'var(--white)', borderColor: 'var(--pale-blue)' }}
+      onClick={() => {
+        const details = getStatCardDetails(title, value, trend)
+        alert(details)
+      }}
     >
       <div className="flex items-start justify-between mb-4">
         <div className="p-3 rounded-lg" style={{ backgroundColor: color + '15', color: color }}>
@@ -144,6 +163,24 @@ const AdminDashboard = () => {
       )}
     </motion.div>
   )
+
+  // Helper function to provide detailed information for StatCards
+  const getStatCardDetails = (title, value, trend) => {
+    const trendText = trend ? `\\n\\nTrend: ${trend > 0 ? '+' : ''}${trend}% compared to last month` : ''
+    
+    switch (title) {
+      case 'Total Children':
+        return `Total Children Registered: ${value}\\n\\nBreakdown:\\n• Active cases: ${systemStats.activeCases}\\n• Completed cases: 678\\n• New this month: 23\\n• Average age: 9.2 years\\n• Male: 52%, Female: 48%${trendText}`
+      case 'Active Cases':
+        return `Active Cases Requiring Attention: ${value}\\n\\nPriority levels:\\n• Critical: 12 cases\\n• High: 87 cases\\n• Medium: 146 cases\\n• Average case duration: 8.3 months\\n• Resolution rate: 85%${trendText}`
+      case 'Social Workers':
+        return `Field Social Workers: ${value}\\n\\nStaff details:\\n• Full-time: 28 workers\\n• Part-time: 6 workers\\n• Average caseload: 15 children\\n• Districts covered: 12\\n• Response time: 2.5 hours avg${trendText}`
+      case 'Total Resources':
+        return `Total Resources Available: ${value}\\n\\nResource allocation:\\n• Healthcare: $32,500\\n• Education: $28,900\\n• Nutrition: $18,600\\n• Housing: $9,500\\n• Emergency fund: $15,000${trendText}`
+      default:
+        return `${title}: ${value}\\n\\nClick to view detailed analytics and historical data.${trendText}`
+    }
+  }
 
   const ActivityItem = ({ activity }) => (
     <motion.div
@@ -262,6 +299,10 @@ const AdminDashboard = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  alert('Opening geographic distribution map... This will show district-wise data visualization.')
+                  // TODO: Implement map view functionality
+                }}
                 className="text-sm font-semibold flex items-center gap-1"
                 style={{ color: 'var(--navy-blue)' }}
               >
@@ -309,6 +350,10 @@ const AdminDashboard = () => {
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                onClick={() => {
+                  alert('Opening full activity log... This will show complete system activity history.')
+                  // TODO: Implement full activity view
+                }}
                 className="text-sm font-semibold flex items-center gap-1"
                 style={{ color: 'var(--navy-blue)' }}
               >
@@ -329,6 +374,14 @@ const AdminDashboard = () => {
 
   // User Management Content
   const renderUserManagementContent = () => {
+    const usersList = [
+      { id: 2, name: 'Jean Baptiste', role: 'Social Worker', status: 'Active', district: 'Musanze', lastLogin: '2024-11-24' },
+      { id: 3, name: 'Grace Mukamana', role: 'Caregiver', status: 'Active', district: 'Kigali', lastLogin: '2024-11-25' },
+      { id: 4, name: 'Paul Nkurunziza', role: 'Social Worker', status: 'Pending', district: 'Huye', lastLogin: '2024-11-20' },
+      { id: 5, name: 'Rose Uwase', role: 'Donor', status: 'Active', district: 'N/A', lastLogin: '2024-11-23' },
+      { id: 6, name: 'Marie Uwimana', role: 'Social Worker', status: 'Active', district: 'Kigali', lastLogin: '2024-11-25' }
+    ]
+
     return (
       <div className="space-y-6">
         <div className="bg-white rounded-xl shadow-sm border p-6" style={{ borderColor: 'var(--pale-blue)' }}>
@@ -339,6 +392,10 @@ const AdminDashboard = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                alert('Opening user registration form... This will allow you to add new users to the system.')
+                // TODO: Implement user registration modal
+              }}
               className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white"
               style={{ backgroundColor: 'var(--navy-blue)' }}
             >
@@ -346,15 +403,92 @@ const AdminDashboard = () => {
               Add New User
             </motion.button>
           </div>
+          
+          {/* User Management Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <StatCard title="Total Users" value="127" icon={FaUsers} color="#3b82f6" />
             <StatCard title="Active Users" value="98" icon={FaCheckCircle} color="#10b981" />
             <StatCard title="Pending Approvals" value="12" icon={FaExclamationTriangle} color="#f59e0b" />
           </div>
-          <div className="text-center py-8" style={{ color: 'var(--para)' }}>
-            <FaUsers size={48} className="mx-auto mb-4 opacity-50" />
-            <p>User management interface will be implemented here.</p>
-            <p className="text-sm">Features: Add/Edit users, Role management, Permissions</p>
+
+          {/* Users List */}
+          <div className="space-y-3">
+            <div className="grid grid-cols-12 gap-4 px-4 py-2 text-sm font-semibold" style={{ color: 'var(--navy-blue)' }}>
+              <div className="col-span-3">Name</div>
+              <div className="col-span-2">Role</div>
+              <div className="col-span-2">Status</div>
+              <div className="col-span-2">District</div>
+              <div className="col-span-2">Last Login</div>
+              <div className="col-span-1">Actions</div>
+            </div>
+            
+            {usersList.map((user) => (
+              <motion.div
+                key={user.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="grid grid-cols-12 gap-4 px-4 py-3 rounded-lg border"
+                style={{ borderColor: 'var(--pale-blue)', backgroundColor: 'var(--off-white)' }}
+              >
+                <div className="col-span-3 flex items-center gap-3">
+                  <div 
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                    style={{ backgroundColor: 'var(--navy-blue)' }}
+                  >
+                    {user.name.charAt(0)}
+                  </div>
+                  <span className="font-semibold" style={{ color: 'var(--navy-blue)' }}>{user.name}</span>
+                </div>
+                <div className="col-span-2 flex items-center">
+                  <span className="text-sm" style={{ color: 'var(--para)' }}>{user.role}</span>
+                </div>
+                <div className="col-span-2 flex items-center">
+                  <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                    user.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {user.status}
+                  </span>
+                </div>
+                <div className="col-span-2 flex items-center">
+                  <span className="text-sm" style={{ color: 'var(--para)' }}>{user.district}</span>
+                </div>
+                <div className="col-span-2 flex items-center">
+                  <span className="text-sm" style={{ color: 'var(--para)' }}>{user.lastLogin}</span>
+                </div>
+                <div className="col-span-1 flex items-center">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={() => {
+                      alert(`User Management Actions for ${user.name}:\\n\\n• Edit user details\\n• Change role/permissions\\n• Reset password\\n• ${user.status === 'Active' ? 'Deactivate' : 'Activate'} account\\n• View activity log`)
+                    }}
+                    className="p-1 rounded"
+                    style={{ color: 'var(--navy-blue)' }}
+                  >
+                    <FaEdit size={14} />
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          
+          {/* Load More Button */}
+          <div className="text-center mt-6">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                alert('Loading more users... This will show additional users with pagination controls.')
+              }}
+              className="px-6 py-2 rounded-lg border-2 font-semibold"
+              style={{ 
+                color: 'var(--navy-blue)', 
+                borderColor: 'var(--navy-blue)',
+                backgroundColor: 'transparent'
+              }}
+            >
+              Load More Users
+            </motion.button>
           </div>
         </div>
       </div>
@@ -373,6 +507,10 @@ const AdminDashboard = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                alert('Opening resource registration form... This will allow you to add new resources to inventory.')
+                // TODO: Implement resource registration modal
+              }}
               className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white"
               style={{ backgroundColor: 'var(--navy-blue)' }}
             >
@@ -386,12 +524,10 @@ const AdminDashboard = () => {
             <StatCard title="Allocated" value="187" icon={FaHandsHelping} color="#f59e0b" />
             <StatCard title="Pending" value="37" icon={FaExclamationTriangle} color="#ef4444" />
           </div>
-          <div className="text-center py-8" style={{ color: 'var(--para)' }}>
-            <FaBuilding size={48} className="mx-auto mb-4 opacity-50" />
-            <p>Resource management interface will be implemented here.</p>
-            <p className="text-sm">Features: Inventory tracking, Resource allocation, Distribution management</p>
-          </div>
         </div>
+        
+        {/* Automated Resource Matching */}
+        <ResourceMatching />
       </div>
     )
   }
@@ -408,6 +544,10 @@ const AdminDashboard = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              onClick={() => {
+                alert('Generating custom analytics report... This will create a detailed performance analysis.')
+                // TODO: Implement report generation functionality
+              }}
               className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white"
               style={{ backgroundColor: 'var(--navy-blue)' }}
             >
@@ -471,6 +611,10 @@ const AdminDashboard = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              alert('Exporting system report... This will download a comprehensive system overview.')
+              // TODO: Implement actual export functionality
+            }}
             className="flex items-center gap-2 px-4 py-2 rounded-lg font-semibold text-white portal-button"
             style={{ backgroundColor: 'var(--navy-blue)' }}
           >
@@ -480,58 +624,8 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* Navigation Sidebar */}
-      <div className="flex gap-8">
-        {/* Sidebar */}
-        <div className="w-80 shrink-0">
-          <div className="bg-white rounded-xl shadow-sm border" style={{ borderColor: 'var(--pale-blue)' }}>
-            {/* User Profile Section */}
-            <div className="p-6 border-b" style={{ borderColor: 'var(--pale-blue)' }}>
-              <div className="flex items-center gap-3">
-                <div 
-                  className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg"
-                  style={{ backgroundColor: 'var(--navy-blue)' }}
-                >
-                  <FaUserCog />
-                </div>
-                <div>
-                  <h3 className="font-semibold" style={{ color: 'var(--navy-blue)' }}>System Admin</h3>
-                  <p className="text-sm" style={{ color: 'var(--para)' }}>Admin</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Navigation Menu */}
-            <nav className="p-4">
-              {navigationTabs.map((tab) => (
-                <motion.button
-                  key={tab.id}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3 p-3 rounded-lg text-left mb-2 transition-all font-medium ${
-                    activeTab === tab.id 
-                      ? 'text-white' 
-                      : 'hover:bg-gray-50'
-                  }`}
-                  style={{
-                    backgroundColor: activeTab === tab.id ? 'var(--navy-blue)' : 'transparent',
-                    color: activeTab === tab.id ? 'white' : 'var(--navy-blue)'
-                  }}
-                >
-                  <tab.icon size={18} />
-                  <span>{tab.label}</span>
-                </motion.button>
-              ))}
-            </nav>
-          </div>
-        </div>
-
-        {/* Main Content Area */}
-        <div className="flex-1">
-          {renderTabContent()}
-        </div>
-      </div>
+      {/* Main Content Area */}
+      {renderTabContent()}
     </div>
   )
 }

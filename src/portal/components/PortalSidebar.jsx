@@ -1,45 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useUser } from '../context/UserContext'
 import { FaHome, FaUsers, FaBox, FaChartBar, FaCog, FaHeart, FaDonate, FaUserCog } from 'react-icons/fa'
 
 const PortalSidebar = () => {
   const { user } = useUser()
+  const [activeTab, setActiveTab] = useState('dashboard')
 
   const getMenuItems = () => {
     const commonItems = [
-      { icon: FaHome, label: 'Dashboard', path: '#' }
+      { icon: FaHome, label: 'Dashboard', tab: 'dashboard' }
     ]
 
     switch (user?.role) {
       case 'admin':
         return [
           ...commonItems,
-          { icon: FaUsers, label: 'User Management', path: '#' },
-          { icon: FaBox, label: 'Resource Management', path: '#' },
-          { icon: FaChartBar, label: 'Reports & Analytics', path: '#' },
-          { icon: FaCog, label: 'System Settings', path: '#' }
+          { icon: FaUsers, label: 'User Management', tab: 'user-management' },
+          { icon: FaBox, label: 'Resource Management', tab: 'resource-management' },
+          { icon: FaChartBar, label: 'Reports & Analytics', tab: 'reports' },
+          { icon: FaCog, label: 'System Settings', tab: 'settings' }
         ]
       case 'social-worker':
         return [
           ...commonItems,
-          { icon: FaUsers, label: 'Child Registry', path: '#' },
-          { icon: FaHeart, label: 'Active Cases', path: '#' },
-          { icon: FaBox, label: 'Resource Requests', path: '#' },
-          { icon: FaChartBar, label: 'My Reports', path: '#' }
+          { icon: FaUsers, label: 'Child Registry', tab: 'children' },
+          { icon: FaHeart, label: 'Active Cases', tab: 'cases' },
+          { icon: FaBox, label: 'Resource Requests', tab: 'resources' },
+          { icon: FaChartBar, label: 'My Reports', tab: 'reports' }
         ]
       case 'caregiver':
         return [
           ...commonItems,
-          { icon: FaHeart, label: 'My Children', path: '#' },
-          { icon: FaBox, label: 'Support Status', path: '#' },
-          { icon: FaUsers, label: 'Messages', path: '#' }
+          { icon: FaHeart, label: 'My Children', tab: 'children' },
+          { icon: FaBox, label: 'Support Status', tab: 'support' },
+          { icon: FaUsers, label: 'Messages', tab: 'messages' }
         ]
       case 'donor':
         return [
           ...commonItems,
-          { icon: FaDonate, label: 'My Donations', path: '#' },
-          { icon: FaChartBar, label: 'Impact Dashboard', path: '#' },
-          { icon: FaHeart, label: 'Supported Children', path: '#' }
+          { icon: FaDonate, label: 'My Donations', tab: 'donations' },
+          { icon: FaChartBar, label: 'Impact Dashboard', tab: 'impact' },
+          { icon: FaHeart, label: 'Supported Children', tab: 'children' }
         ]
       default:
         return commonItems
@@ -70,27 +71,33 @@ const PortalSidebar = () => {
         <ul className="space-y-2">
           {menuItems.map((item, index) => (
             <li key={index}>
-              <a
-                href={item.path}
-                className="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-opacity-10"
+              <button
+                onClick={() => {
+                  setActiveTab(item.tab)
+                  // Dispatch custom event to notify dashboard components
+                  window.dispatchEvent(new CustomEvent('tabChange', { 
+                    detail: { tab: item.tab, role: user?.role } 
+                  }))
+                }}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-opacity-10"
                 style={{ 
                   color: 'var(--navy-blue)',
-                  backgroundColor: index === 0 ? 'var(--pale-blue)' : 'transparent'
+                  backgroundColor: activeTab === item.tab ? 'var(--pale-blue)' : 'transparent'
                 }}
                 onMouseEnter={(e) => {
-                  if (index !== 0) {
+                  if (activeTab !== item.tab) {
                     e.currentTarget.style.backgroundColor = 'var(--off-white)'
                   }
                 }}
                 onMouseLeave={(e) => {
-                  if (index !== 0) {
+                  if (activeTab !== item.tab) {
                     e.currentTarget.style.backgroundColor = 'transparent'
                   }
                 }}
               >
                 <item.icon size={16} />
                 <span className="text-sm font-medium">{item.label}</span>
-              </a>
+              </button>
             </li>
           ))}
         </ul>

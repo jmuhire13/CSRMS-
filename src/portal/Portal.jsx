@@ -8,6 +8,7 @@ import PortalLayout from './components/PortalLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 
 // Import portal pages with lazy loading for better performance
+const Auth = React.lazy(() => import('./pages/Auth'))
 const RoleSelection = React.lazy(() => import('./pages/RoleSelection'))
 const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'))
 const SocialWorkerDashboard = React.lazy(() => import('./pages/SocialWorkerDashboard'))
@@ -118,13 +119,14 @@ const PortalWrapper = () => {
     <div className="portal-container min-h-screen portal-fade-in" style={{ backgroundColor: 'var(--off-white)' }}>
       <Suspense fallback={<PortalLoading />}>
         <Routes>
-          {/* Public route - Role Selection */}
-          <Route path="/" element={<RoleSelection />} />
+          {/* Public route - Authentication */}
+          <Route path="/" element={<Auth />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/select" element={<RoleSelection />} />
           
           {/* Protected routes - Dashboards */}
           <Route path="/dashboard" element={<PortalLayout />}>
-            <Route index element={<Navigate to="/portal/" replace />} />
+            <Route index element={<Navigate to="/portal/select" replace />} />
             
             <Route 
               path="admin" 
@@ -158,6 +160,16 @@ const PortalWrapper = () => {
               element={
                 <ProtectedRoute allowedRoles={['donor']}>
                   <DonorDashboard />
+                </ProtectedRoute>
+              } 
+            />
+            
+            {/* Catch-all route for authenticated users */}
+            <Route 
+              path="*" 
+              element={
+                <ProtectedRoute>
+                  <Navigate to="/portal/select" replace />
                 </ProtectedRoute>
               } 
             />

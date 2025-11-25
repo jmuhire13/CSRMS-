@@ -30,8 +30,21 @@ const ContactUs = ({ setActiveSection }) => {
     e.preventDefault()
     // Handle form submission
     console.log('Form submitted:', formData)
-    // Reset form
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' })
+    // Reset form to initial state
+    setFormData({
+      title: '',
+      firstname: '',
+      lastname: '',
+      email: '',
+      phone: '',
+      street: '',
+      postcode: '',
+      town: '',
+      country: 'Rwanda',
+      type: '',
+      message: '',
+      consent: false
+    })
     alert('Thank you for contacting us! We will get back to you soon.')
   }
 

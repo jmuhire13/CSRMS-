@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'motion/react'
 import { useUser } from '../context/UserContext'
 import { FaSignOutAlt, FaBell, FaUser } from 'react-icons/fa'
+import NotificationPanel from './NotificationPanel'
 
 const PortalHeader = () => {
   const { user, logout } = useUser()
+  const [showNotifications, setShowNotifications] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -37,10 +39,12 @@ const PortalHeader = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="p-2 rounded-lg"
+            onClick={() => setShowNotifications(true)}
+            className="p-2 rounded-lg relative"
             style={{ color: 'var(--navy-blue)' }}
           >
             <FaBell size={18} />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
           </motion.button>
 
           {/* User Menu */}
@@ -82,6 +86,11 @@ const PortalHeader = () => {
           </motion.button>
         </div>
       </div>
+      
+      <NotificationPanel 
+        isOpen={showNotifications} 
+        onClose={() => setShowNotifications(false)} 
+      />
     </header>
   )
 }

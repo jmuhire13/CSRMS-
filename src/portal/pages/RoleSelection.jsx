@@ -1,12 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'motion/react'
 import { useUser } from '../context/UserContext'
 import { FaUserCog, FaUsers, FaHeart, FaDonate, FaArrowLeft } from 'react-icons/fa'
 
 const RoleSelection = () => {
-  const { login } = useUser()
+  const { login, user, isAuthenticated } = useUser()
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      // Only redirect if we're on the role selection page
+      if (window.location.pathname === '/portal/select') {
+        navigate(`/portal/dashboard/${user.role}`)
+      }
+    }
+  }, [isAuthenticated, user, navigate])
 
   // Debug log
   console.log('RoleSelection component loaded')
@@ -66,8 +75,12 @@ const RoleSelection = () => {
   ]
 
   const handleRoleSelect = (role) => {
-    login(role.id, role.user)
-    navigate(`/portal/dashboard/${role.id}`)
+    // This is now just for demo purposes since we have real auth
+    if (isAuthenticated && user) {
+      navigate(`/portal/dashboard/${user.role}`)
+    } else {
+      navigate('/portal/')
+    }
   }
 
   const goBackToWebsite = () => {
