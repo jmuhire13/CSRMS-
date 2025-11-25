@@ -15,7 +15,15 @@ const DonateSection = ({ setActiveSection }) => {
   })
 
   const handleInputChange = (e) => {
-    setDonationData({ ...donationData, [e.target.name]: e.target.value })
+    try {
+      const { name, value } = e.target
+      if (name === 'amount' && value && (isNaN(value) || parseFloat(value) < 0)) {
+        return
+      }
+      setDonationData({ ...donationData, [name]: value })
+    } catch (error) {
+      console.error('Input change error:', error)
+    }
   }
 
   const handleDonationSubmit = (e) => {
@@ -63,7 +71,13 @@ const DonateSection = ({ setActiveSection }) => {
                       <button
                         key={amount}
                         type='button'
-                        onClick={() => setDonationData({...donationData, amount: amount.toString()})}
+                        onClick={() => {
+                          try {
+                            setDonationData({...donationData, amount: amount.toString()})
+                          } catch (error) {
+                            console.error('Amount selection error:', error)
+                          }
+                        }}
                         className={`py-2 px-4 rounded-lg border-2 font-semibold transition ${
                           donationData.amount === amount.toString() 
                             ? 'text-white' 
@@ -97,6 +111,7 @@ const DonateSection = ({ setActiveSection }) => {
                     value={donationData.type}
                     onChange={handleInputChange}
                     className='w-full p-3 border-2 rounded-lg focus:outline-none focus:border-blue-500'
+                    aria-label='Select donation type'
                   >
                     <option value='one-time'>One-Time Donation</option>
                     <option value='monthly'>Monthly Recurring</option>
@@ -174,7 +189,13 @@ const DonateSection = ({ setActiveSection }) => {
                       <button
                         key={method.value}
                         type='button'
-                        onClick={() => setDonationData({...donationData, paymentMethod: method.value})}
+                        onClick={() => {
+                          try {
+                            setDonationData({...donationData, paymentMethod: method.value})
+                          } catch (error) {
+                            console.error('Payment method selection error:', error)
+                          }
+                        }}
                         className={`py-2 px-3 rounded-lg border-2 font-semibold transition text-sm ${
                           donationData.paymentMethod === method.value 
                             ? 'text-white' 

@@ -1,20 +1,28 @@
 import React, { useState } from 'react'
 import { motion } from 'motion/react'
+import { useNavigate } from 'react-router-dom'
 import { useUser } from '../context/UserContext'
 import { FaSignOutAlt, FaBell, FaUser } from 'react-icons/fa'
 import NotificationPanel from './NotificationPanel'
 
 const PortalHeader = () => {
   const { user, logout } = useUser()
+  const navigate = useNavigate()
   const [showNotifications, setShowNotifications] = useState(false)
 
-  const handleLogout = () => {
-    logout()
-    window.location.href = '/portal'
+  const handleLogout = (e) => {
+    e.preventDefault()
+    if (e.isTrusted) {
+      logout()
+      navigate('/portal')
+    }
   }
 
-  const goBackToWebsite = () => {
-    window.location.href = '/'
+  const goBackToWebsite = (e) => {
+    e.preventDefault()
+    if (e.isTrusted) {
+      navigate('/')
+    }
   }
 
   return (
@@ -70,6 +78,7 @@ const PortalHeader = () => {
             whileTap={{ scale: 0.95 }}
             className="px-3 py-2 rounded-lg font-semibold text-sm"
             style={{ color: 'var(--navy-blue)', backgroundColor: 'var(--off-white)' }}
+            type="button"
           >
             <FaSignOutAlt />
           </motion.button>
@@ -81,6 +90,7 @@ const PortalHeader = () => {
             whileTap={{ scale: 0.95 }}
             className="px-3 py-2 rounded-lg font-semibold text-sm hidden lg:block"
             style={{ color: 'white', backgroundColor: 'var(--navy-blue)' }}
+            type="button"
           >
             Website
           </motion.button>

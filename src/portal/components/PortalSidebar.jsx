@@ -72,28 +72,21 @@ const PortalSidebar = () => {
           {menuItems.map((item, index) => (
             <li key={index}>
               <button
-                onClick={() => {
-                  setActiveTab(item.tab)
-                  // Dispatch custom event to notify dashboard components
-                  window.dispatchEvent(new CustomEvent('tabChange', { 
-                    detail: { tab: item.tab, role: user?.role } 
-                  }))
-                }}
-                className="w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 hover:bg-opacity-10"
-                style={{ 
-                  color: 'var(--navy-blue)',
-                  backgroundColor: activeTab === item.tab ? 'var(--pale-blue)' : 'transparent'
-                }}
-                onMouseEnter={(e) => {
-                  if (activeTab !== item.tab) {
-                    e.currentTarget.style.backgroundColor = 'var(--off-white)'
+                onClick={(e) => {
+                  e.preventDefault()
+                  if (e.isTrusted) {
+                    setActiveTab(item.tab)
+                    // Dispatch custom event to notify dashboard components
+                    window.dispatchEvent(new CustomEvent('tabChange', { 
+                      detail: { tab: item.tab, role: user?.role } 
+                    }))
                   }
                 }}
-                onMouseLeave={(e) => {
-                  if (activeTab !== item.tab) {
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                  }
-                }}
+                type="button"
+                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 ${
+                  activeTab === item.tab ? 'bg-blue-50' : 'hover:bg-gray-50'
+                }`}
+                style={{ color: 'var(--navy-blue)' }}
               >
                 <item.icon size={16} />
                 <span className="text-sm font-medium">{item.label}</span>
