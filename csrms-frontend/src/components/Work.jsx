@@ -96,7 +96,8 @@ const Work = ({ setActiveSection }) => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-              className='flex gap-4 p-5 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow duration-300'
+              className='flex gap-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4'
+              style={{ borderTopColor: 'var(--navy-blue)' }}
             >
               <div 
                 className='w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0'
@@ -121,7 +122,8 @@ const Work = ({ setActiveSection }) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7 }}
-          className='text-center bg-white rounded-2xl p-8 shadow-lg'
+          className='text-center bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4'
+          style={{ borderTopColor: 'var(--navy-blue)' }}
         >
           <h3 className='text-xl sm:text-2xl font-bold font-secondary mb-3' style={{ color: 'var(--navy-blue)' }}>
             Ready to Make a Difference?

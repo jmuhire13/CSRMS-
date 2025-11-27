@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { motion } from 'motion/react'
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaLinkedin, FaInstagram, FaTwitter, FaFacebook, FaYoutube } from 'react-icons/fa'
-import contactImage from '../assets/1.jpeg'
+
+const contactImage = 'https://images.pexels.com/photos/699122/pexels-photo-699122.jpeg'
 
 const ContactUs = ({ setActiveSection }) => {
   const [formData, setFormData] = useState({
@@ -57,146 +58,180 @@ const ContactUs = ({ setActiveSection }) => {
   ]
 
   return (
-    <div id='contact-us' style={{ backgroundColor: 'var(--white)' }}>
-      {/* Hero Section */}
-      <div className='pt-24 sm:pt-28 px-4 pb-16' style={{ backgroundColor: 'var(--off-white)' }}>
+    <div id='contact-us' style={{ backgroundColor: 'var(--off-white)' }}>
+      <div className='min-h-screen pt-32 sm:pt-36 px-4 pb-12'>
         <div className='container mx-auto max-w-6xl'>
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center'>
-            
-            {/* Left - Text Content */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <h1 className='text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-secondary mb-6' style={{ color: 'var(--navy-blue)' }}>
-                Contact us
-              </h1>
-              
-              <p className='text-base sm:text-lg md:text-xl leading-relaxed' style={{ color: 'var(--para)' }}>
-                If you have any questions or would like to find out more about our foundation, please do not hesitate to contact us. We look forward to hearing from you.
-              </p>
-            </motion.div>
+          
+          {/* Header Section */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className='mb-8 text-center'
+          >
+            <h1 className='text-3xl sm:text-4xl md:text-5xl font-bold font-secondary mb-3' style={{ color: 'var(--navy-blue)' }}>
+              Contact Us
+            </h1>
+            <p className='text-base sm:text-lg max-w-2xl mx-auto' style={{ color: 'var(--para)' }}>
+              We're here to answer your questions and connect you with our mission
+            </p>
+          </motion.div>
 
-            {/* Right - Image */}
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className='order-first lg:order-last'
-            >
+          {/* Hero Image with Overlay Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className='relative mb-10 rounded-2xl overflow-hidden shadow-xl'
+          >
+            <div className='relative h-[350px] sm:h-[400px] md:h-[450px]'>
               <img 
                 src={contactImage} 
-                alt='Team Meeting' 
-                className='w-full h-auto rounded-3xl shadow-2xl object-cover'
+                alt='Contact Us' 
+                className='w-full h-full object-cover'
               />
-            </motion.div>
-
-          </div>
-        </div>
-      </div>
-
-      {/* Contact Information & Form Section */}
-      <div className='px-4 py-16' style={{ backgroundColor: 'var(--white)' }}>
-        <div className='container mx-auto max-w-6xl'>
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-12'>
-            
-            {/* Left - Contact Information */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <h2 className='text-3xl sm:text-4xl font-bold font-secondary mb-6' style={{ color: 'var(--navy-blue)' }}>
-                Let's Connect
-              </h2>
+              <div className='absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent'></div>
               
-              <p className='text-lg mb-8 leading-relaxed' style={{ color: 'var(--para)' }}>
-                Whether you're interested in partnering with us, volunteering, or simply learning more about our mission, we're here to help.
-              </p>
-
-              {/* Contact Details */}
-              <div className='space-y-6 mb-8'>
-                <div className='flex items-start gap-4'>
-                  <div className='w-12 h-12 rounded-full flex items-center justify-center shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
-                    <FaMapMarkerAlt className='text-white text-xl' />
+              <div className='absolute bottom-0 left-0 right-0 p-6 sm:p-8 md:p-10 text-white'>
+                <h2 className='text-xl sm:text-2xl md:text-3xl font-bold font-secondary mb-3'>
+                  Let's Connect
+                </h2>
+                <p className='text-sm sm:text-base max-w-2xl leading-relaxed mb-4'>
+                  Whether you have questions, want to partner with us, volunteer your time, or simply learn more 
+                  about our mission to transform child welfare in Rwanda - we're here to help. Reach out and let's 
+                  build a compassionate future together.
+                </p>
+                <div className='flex flex-wrap gap-3'>
+                  <div className='flex items-center gap-2 text-sm'>
+                    <FaEnvelope />
+                    <span>info@compassionaterwanda.org</span>
                   </div>
-                  <div>
-                    <h3 className='font-semibold text-lg mb-1' style={{ color: 'var(--navy-blue)' }}>
-                      Our Location
-                    </h3>
-                    <p style={{ color: 'var(--para)' }}>
-                      Kigali, Rwanda
-                    </p>
-                  </div>
-                </div>
-
-                <div className='flex items-start gap-4'>
-                  <div className='w-12 h-12 rounded-full flex items-center justify-center shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
-                    <FaEnvelope className='text-white text-xl' />
-                  </div>
-                  <div>
-                    <h3 className='font-semibold text-lg mb-1' style={{ color: 'var(--navy-blue)' }}>
-                      Email Us
-                    </h3>
-                    <p style={{ color: 'var(--para)' }}>
-                      info@compassionaterwanda.org
-                    </p>
-                  </div>
-                </div>
-
-                <div className='flex items-start gap-4'>
-                  <div className='w-12 h-12 rounded-full flex items-center justify-center shrink-0' style={{ backgroundColor: 'var(--navy-blue)' }}>
-                    <FaPhone className='text-white text-xl' />
-                  </div>
-                  <div>
-                    <h3 className='font-semibold text-lg mb-1' style={{ color: 'var(--navy-blue)' }}>
-                      Call Us
-                    </h3>
-                    <p style={{ color: 'var(--para)' }}>
-                      +250 788 000 000
-                    </p>
+                  <div className='flex items-center gap-2 text-sm'>
+                    <FaPhone />
+                    <span>+250 788 000 000</span>
                   </div>
                 </div>
               </div>
+            </div>
+          </motion.div>
 
-              {/* Social Media */}
+          {/* Contact Information Cards - 2x2 Grid */}
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-10'>
+            
+            {/* Location Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className='flex gap-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4'
+              style={{ borderTopColor: 'var(--navy-blue)' }}
+            >
+              <div 
+                className='w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0'
+                style={{ backgroundColor: 'var(--navy-blue)' }}
+              >
+                <FaMapMarkerAlt className='text-white text-xl' />
+              </div>
               <div>
-                <h3 className='font-semibold text-lg mb-4' style={{ color: 'var(--navy-blue)' }}>
-                  Follow Us
+                <h3 className='text-base font-bold mb-1.5' style={{ color: 'var(--navy-blue)' }}>
+                  Our Location
                 </h3>
-                <div className='flex gap-3'>
-                  {socialLinks.map((social) => (
-                    <motion.a
-                      key={social.name}
-                      href={social.url}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      whileHover={{ scale: 1.1, y: -3 }}
-                      whileTap={{ scale: 0.95 }}
-                      className='w-12 h-12 rounded-full flex items-center justify-center text-white transition'
-                      style={{ backgroundColor: social.color }}
-                      aria-label={social.name}
-                    >
-                      <social.icon size={20} />
-                    </motion.a>
-                  ))}
-                </div>
+                <p className='text-sm leading-relaxed' style={{ color: 'var(--para)' }}>
+                  Kigali, Rwanda
+                </p>
               </div>
             </motion.div>
 
-            {/* Right - Contact Form */}
+            {/* Email Card */}
             <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className='flex gap-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4'
+              style={{ borderTopColor: 'var(--navy-blue)' }}
             >
-              <div className='bg-white rounded-3xl p-8 shadow-2xl' style={{ border: '1px solid var(--pale-blue)' }}>
-                <h2 className='text-2xl sm:text-3xl font-bold font-secondary mb-6' style={{ color: 'var(--navy-blue)' }}>
-                  Send us a Message
-                </h2>
+              <div 
+                className='w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0'
+                style={{ backgroundColor: 'var(--navy-blue)' }}
+              >
+                <FaEnvelope className='text-white text-xl' />
+              </div>
+              <div>
+                <h3 className='text-base font-bold mb-1.5' style={{ color: 'var(--navy-blue)' }}>
+                  Email Us
+                </h3>
+                <p className='text-sm leading-relaxed' style={{ color: 'var(--para)' }}>
+                  info@compassionaterwanda.org
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Phone Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className='flex gap-4 p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4'
+              style={{ borderTopColor: 'var(--navy-blue)' }}
+            >
+              <div 
+                className='w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0'
+                style={{ backgroundColor: 'var(--navy-blue)' }}
+              >
+                <FaPhone className='text-white text-xl' />
+              </div>
+              <div>
+                <h3 className='text-base font-bold mb-1.5' style={{ color: 'var(--navy-blue)' }}>
+                  Call Us
+                </h3>
+                <p className='text-sm leading-relaxed' style={{ color: 'var(--para)' }}>
+                  +250 788 000 000
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Social Media Card */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className='p-6 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4'
+              style={{ borderTopColor: 'var(--navy-blue)' }}
+            >
+              <h3 className='text-base font-bold mb-3' style={{ color: 'var(--navy-blue)' }}>
+                Follow Us
+              </h3>
+              <div className='flex gap-3'>
+                {socialLinks.map((social) => (
+                  <motion.a
+                    key={social.name}
+                    href={social.url}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    whileHover={{ scale: 1.1, y: -3 }}
+                    whileTap={{ scale: 0.95 }}
+                    className='w-10 h-10 rounded-lg flex items-center justify-center text-white transition'
+                    style={{ backgroundColor: social.color }}
+                    aria-label={social.name}
+                  >
+                    <social.icon size={18} />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Contact Form - Full Width Below */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.7 }}
+            className='max-w-3xl mx-auto'
+          >
+            <div className='bg-white rounded-xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border-t-4' style={{ borderTopColor: 'var(--navy-blue)' }}>
+              <h2 className='text-xl sm:text-2xl font-bold font-secondary mb-5' style={{ color: 'var(--navy-blue)' }}>
+                Send us a Message
+              </h2>
 
                 <form onSubmit={handleSubmit} className='space-y-4'>
                   {/* Two Column Grid */}
@@ -435,10 +470,9 @@ const ContactUs = ({ setActiveSection }) => {
                     SEND
                   </motion.button>
                 </form>
-              </div>
-            </motion.div>
+            </div>
+          </motion.div>
 
-          </div>
         </div>
       </div>
 
