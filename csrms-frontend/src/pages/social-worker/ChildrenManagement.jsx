@@ -490,7 +490,7 @@ const ChildrenManagement = () => {
                         child.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
                         child.status === 'graduated' ? 'bg-blue-200 text-blue-900' :
                         'bg-gray-200 text-gray-700'
-                      }`}
+                      }`}>
                         {child.status}
                       </span>
                     </td>
