@@ -485,7 +485,7 @@ const ChildrenManagement = () => {
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         child.status === 'active' ? 'bg-blue-100 text-blue-800' :
                         child.status === 'inactive' ? 'bg-gray-100 text-gray-800' :
                         child.status === 'graduated' ? 'bg-blue-200 text-blue-900' :
