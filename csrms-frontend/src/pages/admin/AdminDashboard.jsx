@@ -3,6 +3,7 @@ import DashboardOverview from './DashboardOverview';
 import UserManagement from '../../components/UserManagement';
 import ChildrenManagement from './ChildrenManagement';
 import DonationsManagement from './DonationsManagement';
+import ResourceRequestsManagement from './ResourceRequestsManagement';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -29,6 +30,8 @@ const AdminDashboard = () => {
         return <ChildrenManagement />;
       case 'donations':
         return <DonationsManagement />;
+      case 'resource-requests':
+        return <ResourceRequestsManagement />;
       case 'reports':
         return (
           <div className="p-6">

@@ -194,4 +194,80 @@ router.post('/donor/donate', [auth, authorize('donor')], [
   return donationController.createDonation(req, res);
 });
 
+// @route   POST /api/donations/process-card-payment
+// @desc    Process simulated card payment (demo mode)
+// @access  Private (Donor)
+router.post('/process-card-payment', [auth, authorize('donor')], async (req, res) => {
+  try {
+    console.log('💳 Processing card payment for donor:', req.user.id);
+    console.log('📦 Payment data:', req.body);
+
+    const { amount, currency, type, category, dedicatedTo, message, isAnonymous, cardNumber } = req.body;
+
+    // Simulate payment processing with test cards
+    const testCardNumber = cardNumber.replace(/\s/g, '');
+    console.log('🔢 Test card number:', testCardNumber);
+    
+    // Test card validation
+    const declineCards = [
+      '4000000000009995', // Declined
+      '4000000000000002', // Declined
+    ];
+
+    // Simulate payment failure
+    if (declineCards.includes(testCardNumber)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Your card was declined. Please try another card.' 
+      });
+    }
+
+    // Calculate impact based on amount
+    const impact = {
+      childrenHelped: Math.floor(amount / 50),
+      mealsProvided: Math.floor(amount / 5),
+      medicalCheckups: Math.floor(amount / 25),
+      schoolDays: Math.floor(amount / 10)
+    };
+
+    // Simulate successful payment (accept any card not in decline list)
+    const donation = new Donation({
+      donor: req.user.id,
+      amount,
+      currency: currency || 'RWF',
+      type: type || 'one-time',
+      category: category || 'general',
+      paymentMethod: 'credit-card',
+      transactionId: `CARD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      dedicatedTo: dedicatedTo || [],
+      message: message || '',
+      isAnonymous: isAnonymous || false,
+      status: 'completed',
+      impact,
+      processedAt: new Date(),
+    });
+
+    console.log('💾 Saving card payment to database...');
+    await donation.save();
+    console.log('✅ Card payment saved successfully:', donation.donationId);
+
+    // Populate donor info
+    await donation.populate([
+      { path: 'donor', select: 'name email' },
+      { path: 'dedicatedTo', select: 'personalInfo childId' }
+    ]);
+
+    res.json({ 
+      success: true, 
+      message: 'Payment processed successfully',
+      data: donation 
+    });
+  } catch (error) {
+    console.error('❌ Card payment processing error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
+
 module.exports = router;

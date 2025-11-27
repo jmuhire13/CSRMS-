@@ -27,4 +27,8 @@ router.get('/donations', donationController.getAllDonations);
 router.get('/donations/by-category', donationController.getDonationsByCategory);
 router.get('/donations/trends', donationController.getDonationTrends);
 
+// Resource Request Management Routes
+router.get('/resource-requests', adminController.getAllResourceRequests);
+router.put('/resource-requests/:requestId/status', adminController.updateResourceRequestStatus);
+
 module.exports = router;

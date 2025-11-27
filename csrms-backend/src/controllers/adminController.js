@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const ResourceRequest = require('../models/ResourceRequest');
 const crypto = require('crypto');
 
 // Generate temporary password
@@ -304,6 +305,121 @@ exports.resetUserPassword = async (req, res) => {
 
   } catch (error) {
     console.error('Reset password error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+};
+
+// @desc    Get all resource requests (Admin only)
+exports.getAllResourceRequests = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const filter = {};
+    
+    // Add filters
+    if (req.query.status) filter.status = req.query.status;
+    if (req.query.category) filter.category = req.query.category;
+    if (req.query.urgency) filter.urgency = req.query.urgency;
+
+    const requests = await ResourceRequest.find(filter)
+      .populate('child', 'childId personalInfo')
+      .populate('caregiver', 'name email phone')
+      .populate('socialWorker', 'name email')
+      .populate('respondedBy', 'name')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await ResourceRequest.countDocuments(filter);
+
+    // Get statistics
+    const stats = await ResourceRequest.aggregate([
+      {
+        $group: {
+          _id: '$status',
+          count: { $sum: 1 },
+          totalCost: { $sum: '$estimatedCost' }
+        }
+      }
+    ]);
+
+    res.json({
+      success: true,
+      data: requests,
+      pagination: {
+        current: page,
+        pages: Math.ceil(total / limit),
+        total
+      },
+      statistics: {
+        byStatus: stats.reduce((acc, stat) => {
+          acc[stat._id] = { count: stat.count, totalCost: stat.totalCost };
+          return acc;
+        }, {})
+      }
+    });
+
+  } catch (error) {
+    console.error('Get resource requests error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+};
+
+// @desc    Approve or reject resource request (Admin only)
+exports.updateResourceRequestStatus = async (req, res) => {
+  try {
+    const { requestId } = req.params;
+    const { status, responseNote } = req.body;
+
+    if (!['approved', 'rejected', 'fulfilled'].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status. Must be approved, rejected, or fulfilled'
+      });
+    }
+
+    const request = await ResourceRequest.findById(requestId);
+    
+    if (!request) {
+      return res.status(404).json({
+        success: false,
+        message: 'Resource request not found'
+      });
+    }
+
+    request.status = status;
+    request.responseNote = responseNote || '';
+    request.respondedBy = req.user.id;
+    request.respondedAt = new Date();
+    
+    if (status === 'fulfilled') {
+      request.fulfilledAt = new Date();
+    }
+
+    await request.save();
+
+    await request.populate([
+      { path: 'child', select: 'childId personalInfo' },
+      { path: 'caregiver', select: 'name email' },
+      { path: 'respondedBy', select: 'name' }
+    ]);
+
+    res.json({
+      success: true,
+      message: `Resource request ${status} successfully`,
+      data: request
+    });
+
+  } catch (error) {
+    console.error('Update resource request status error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error'

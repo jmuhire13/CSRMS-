@@ -49,53 +49,53 @@ const DonationsManagement = () => {
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Donations Management</h1>
-        <p className="text-gray-600 mt-1">Track and manage all donations received</p>
+        <h1 className="text-2xl font-bold text-gray-900">Donations Management</h1>
+        <p className="text-sm text-gray-600 mt-1">Track and manage all donations received</p>
       </div>
 
       {/* Statistics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <FaDonate className="text-purple-600" size={20} />
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <FaDonate className="text-blue-800" size={18} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">${(statistics.total || 0).toLocaleString()}</p>
-              <p className="text-sm text-gray-600">Total Amount</p>
+              <p className="text-xl font-bold text-gray-900">${(statistics.total || 0).toLocaleString()}</p>
+              <p className="text-xs text-gray-600">Total Amount</p>
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <FaChartLine className="text-green-600" size={20} />
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <FaChartLine className="text-blue-700" size={18} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">${(statistics.completed || 0).toLocaleString()}</p>
-              <p className="text-sm text-gray-600">Completed</p>
+              <p className="text-xl font-bold text-gray-900">${(statistics.completed || 0).toLocaleString()}</p>
+              <p className="text-xs text-gray-600">Completed</p>
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-yellow-100 rounded-lg">
-              <FaChartLine className="text-yellow-600" size={20} />
+            <div className="p-2 bg-gray-100 rounded-lg">
+              <FaChartLine className="text-gray-700" size={18} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">${(statistics.pending || 0).toLocaleString()}</p>
-              <p className="text-sm text-gray-600">Pending</p>
+              <p className="text-xl font-bold text-gray-900">${(statistics.pending || 0).toLocaleString()}</p>
+              <p className="text-xs text-gray-600">Pending</p>
             </div>
           </div>
         </div>
         <div className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <FaDonate className="text-blue-600" size={20} />
+            <div className="p-2 bg-blue-50 rounded-lg">
+              <FaDonate className="text-blue-600" size={18} />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-900">{statistics.uniqueDonors || 0}</p>
-              <p className="text-sm text-gray-600">Unique Donors</p>
+              <p className="text-xl font-bold text-gray-900">{statistics.uniqueDonors || 0}</p>
+              <p className="text-xs text-gray-600">Unique Donors</p>
             </div>
           </div>
         </div>
@@ -211,10 +211,10 @@ const DonationsManagement = () => {
                     <span
                       className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         donation.status === 'completed'
-                          ? 'bg-green-100 text-green-800'
+                          ? 'bg-blue-100 text-blue-800'
                           : donation.status === 'pending'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-red-100 text-red-800'
+                          ? 'bg-gray-200 text-gray-700'
+                          : 'bg-gray-300 text-gray-800'
                       }`}
                     >
                       {donation.status || 'Unknown'}

@@ -270,6 +270,9 @@ exports.getDonorHistory = async (req, res) => {
 // @desc    Create a new donation
 exports.createDonation = async (req, res) => {
   try {
+    console.log('💰 Creating donation for donor:', req.user.id);
+    console.log('📦 Donation data:', req.body);
+
     const {
       amount,
       currency,
@@ -281,6 +284,14 @@ exports.createDonation = async (req, res) => {
       isAnonymous
     } = req.body;
 
+    // Calculate impact based on amount
+    const impact = {
+      childrenHelped: Math.floor(amount / 50),
+      mealsProvided: Math.floor(amount / 5),
+      medicalCheckups: Math.floor(amount / 25),
+      schoolDays: Math.floor(amount / 10)
+    };
+
     const donation = new Donation({
       donor: req.user.id,
       amount,
@@ -289,13 +300,23 @@ exports.createDonation = async (req, res) => {
       category: category || 'general',
       paymentMethod,
       dedicatedTo: dedicatedTo || [],
-      message,
+      message: message || '',
       isAnonymous: isAnonymous || false,
       status: 'completed', // In production, this would be 'pending' until payment confirmation
+      transactionId: `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      impact,
       processedAt: new Date()
     });
 
+    console.log('💾 Saving donation to database...');
     await donation.save();
+    console.log('✅ Donation saved successfully:', donation.donationId);
+
+    // Populate donor info for response
+    await donation.populate([
+      { path: 'donor', select: 'name email' },
+      { path: 'dedicatedTo', select: 'personalInfo childId' }
+    ]);
 
     res.status(201).json({
       success: true,
@@ -307,7 +328,8 @@ exports.createDonation = async (req, res) => {
     console.error('Create donation error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error'
+      message: error.message || 'Server error',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
 };

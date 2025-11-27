@@ -19,6 +19,7 @@ const PortalSidebar = () => {
           { icon: FaUserCog, label: 'Caregivers', tab: 'caregivers' },
           { icon: FaHeart, label: 'Children', tab: 'children' },
           { icon: FaDonate, label: 'Donations', tab: 'donations' },
+          { icon: FaBox, label: 'Resource Requests', tab: 'resource-requests' },
           { icon: FaChartBar, label: 'Reports', tab: 'reports' }
         ]
       case 'social-worker':
@@ -51,25 +52,25 @@ const PortalSidebar = () => {
   const menuItems = getMenuItems()
 
   return (
-    <aside className="fixed left-0 top-16 h-full w-64 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40" style={{ backgroundColor: 'var(--white)' }}>
-      <div className="p-4 border-b" style={{ borderColor: 'var(--pale-blue)' }}>
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--navy-blue)' }}>
-            <FaUserCog className="text-white" />
+    <aside className="fixed left-0 top-16 h-full w-64 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 shadow-lg lg:shadow-none" style={{ backgroundColor: 'var(--white)' }}>
+      <div className="p-3 md:p-4 border-b" style={{ borderColor: 'var(--pale-blue)' }}>
+        <div className="flex items-center gap-2 md:gap-3">
+          <div className="w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--navy-blue)' }}>
+            <FaUserCog className="text-white text-sm md:text-base" />
           </div>
-          <div>
-            <p className="font-semibold text-sm" style={{ color: 'var(--navy-blue)' }}>
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold text-xs md:text-sm truncate" style={{ color: 'var(--navy-blue)' }}>
               {user?.name}
             </p>
-            <p className="text-xs" style={{ color: 'var(--para)' }}>
+            <p className="text-xs truncate" style={{ color: 'var(--para)' }}>
               {user?.role?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
             </p>
           </div>
         </div>
       </div>
 
-      <nav className="p-4">
-        <ul className="space-y-2">
+      <nav className="p-3 md:p-4">
+        <ul className="space-y-1 md:space-y-2">
           {menuItems.map((item, index) => (
             <li key={index}>
               <button
@@ -84,13 +85,13 @@ const PortalSidebar = () => {
                   }
                 }}
                 type="button"
-                className={`w-full flex items-center gap-3 px-3 py-2 rounded-lg transition-colors duration-200 ${
+                className={`w-full flex items-center gap-2 md:gap-3 px-2 md:px-3 py-2 rounded-lg transition-colors duration-200 ${
                   activeTab === item.tab ? 'bg-blue-50' : 'hover:bg-gray-50'
                 }`}
                 style={{ color: 'var(--navy-blue)' }}
               >
-                <item.icon size={16} />
-                <span className="text-sm font-medium">{item.label}</span>
+                <item.icon size={14} className="md:w-4 md:h-4" />
+                <span className="text-xs md:text-sm font-medium">{item.label}</span>
               </button>
             </li>
           ))}

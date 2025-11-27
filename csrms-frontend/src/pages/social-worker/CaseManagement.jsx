@@ -98,8 +98,8 @@ const CaseManagement = () => {
       </div>
 
       {alert && (
-        <div className={`px-4 py-3 rounded ${
-          alert.type === 'error' ? 'bg-red-50 border border-red-400 text-red-700' : 'bg-green-50 border border-green-400 text-green-700'
+        <div className={`px-4 py-3 rounded text-sm ${
+          alert.type === 'error' ? 'bg-gray-100 border border-gray-400 text-gray-800' : 'bg-blue-50 border border-blue-400 text-blue-800'
         }`}>
           {alert.message}
         </div>
@@ -239,19 +239,19 @@ const CaseManagement = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{caseItem.category}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        caseItem.priority === 'urgent' ? 'bg-red-100 text-red-800' :
-                        caseItem.priority === 'high' ? 'bg-orange-100 text-orange-800' :
-                        caseItem.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-green-100 text-green-800'
+                        caseItem.priority === 'urgent' ? 'bg-gray-300 text-gray-800' :
+                        caseItem.priority === 'high' ? 'bg-blue-200 text-blue-900' :
+                        caseItem.priority === 'medium' ? 'bg-blue-100 text-blue-800' :
+                        'bg-gray-100 text-gray-700'
                       }`}>
                         {caseItem.priority}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        caseItem.status === 'active' ? 'bg-green-100 text-green-800' :
-                        caseItem.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                        caseItem.status === 'completed' ? 'bg-blue-100 text-blue-800' :
+                        caseItem.status === 'active' ? 'bg-blue-100 text-blue-800' :
+                        caseItem.status === 'pending' ? 'bg-gray-200 text-gray-700' :
+                        caseItem.status === 'completed' ? 'bg-blue-200 text-blue-900' :
                         'bg-gray-100 text-gray-800'
                       }`}>
                         {caseItem.status}

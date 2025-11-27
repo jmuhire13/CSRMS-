@@ -20,24 +20,21 @@ const LegacySection = ({ setActiveSection }) => {
       </div>
 
       {/* Hero Section */}
-      <div className='min-h-screen pt-8 px-4 pb-16 flex items-center' style={{ backgroundColor: 'var(--off-white)' }}>
+      <div className='pt-16 px-4 pb-12' style={{ backgroundColor: 'var(--off-white)' }}>
         <div className='container mx-auto max-w-5xl'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center'>
             {/* Left - Text */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className='text-5xl sm:text-6xl md:text-7xl font-bold font-secondary mb-6' style={{ color: 'var(--navy-blue)' }}>
+              <h1 className='text-3xl sm:text-4xl md:text-5xl font-bold font-secondary mb-4' style={{ color: 'var(--navy-blue)' }}>
                 Inheritance and Testament
               </h1>
               
-              <p className='text-base sm:text-lg md:text-xl leading-relaxed' style={{ color: 'var(--para)' }}>
-                Would you like to ensure vulnerable children in Rwanda have 
-                access to healthcare, nutrition, and education forever? Leave 
-                a lasting legacy by endowing Compassionate Rwanda—the digital platform that 
-                guarantees no child falls through the cracks, generation after generation.
+              <p className='text-sm sm:text-base leading-relaxed' style={{ color: 'var(--para)' }}>
+                Would you like to ensure vulnerable children in Rwanda have access to healthcare, nutrition, and education forever? Leave a lasting legacy by endowing Compassionate Rwanda—the digital platform that guarantees no child falls through the cracks, generation after generation.
               </p>
             </motion.div>
 
@@ -46,13 +43,12 @@ const LegacySection = ({ setActiveSection }) => {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className='relative w-full h-80 md:h-96 rounded-3xl overflow-hidden shadow-lg'
+              className='relative w-full h-64 md:h-72 rounded-2xl overflow-hidden shadow-lg'
             >
               <img 
                 src={legacyImage1} 
                 alt='Inheritance and Testament' 
                 className='w-full h-full object-cover'
-                style={{ filter: 'brightness(1.1) contrast(1.15) saturate(1.1)' }}
               />
             </motion.div>
           </div>
@@ -60,30 +56,25 @@ const LegacySection = ({ setActiveSection }) => {
       </div>
 
       {/* Legacy Giving Content */}
-      <div className='px-4 py-16' style={{ backgroundColor: 'var(--white)' }}>
+      <div className='px-4 py-12' style={{ backgroundColor: 'var(--white)' }}>
         <div className='container mx-auto max-w-5xl'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center'>
             {/* Left - Content */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h2 className='text-4xl sm:text-5xl font-bold font-secondary mb-6' style={{ color: 'var(--navy-blue)' }}>
-                Show your solidarity, even after your passing
+              <h2 className='text-2xl sm:text-3xl font-bold font-secondary mb-4' style={{ color: 'var(--navy-blue)' }}>
+                Show Your Solidarity, Even After Your Passing
               </h2>
               
-              <p className='text-base sm:text-lg leading-relaxed mb-6' style={{ color: 'var(--para)' }}>
-                Your legacy transforms child welfare in Rwanda. By endowing Compassionate Rwanda, 
-                you create a perpetual system that registers children's needs, 
-                matches them with resources, and delivers healthcare, nutrition, 
-                and education with real-time transparency—forever.
+              <p className='text-sm sm:text-base leading-relaxed mb-4' style={{ color: 'var(--para)' }}>
+                Your legacy transforms child welfare in Rwanda. By endowing Compassionate Rwanda, you create a perpetual system that registers children's needs, matches them with resources, and delivers healthcare, nutrition, and education with real-time transparency—forever.
               </p>
               
-              <p className='text-base sm:text-lg leading-relaxed' style={{ color: 'var(--para)' }}>
-                Your bequest ensures the platform runs indefinitely, reaching 
-                more vulnerable children each year while reducing resource waste 
-                by 30% through intelligent digital tracking.
+              <p className='text-sm sm:text-base leading-relaxed' style={{ color: 'var(--para)' }}>
+                Your bequest ensures the platform runs indefinitely, reaching more vulnerable children each year while reducing resource waste by 30% through intelligent digital tracking.
               </p>
             </motion.div>
 
@@ -92,13 +83,12 @@ const LegacySection = ({ setActiveSection }) => {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className='relative w-full h-80 md:h-96 rounded-3xl overflow-hidden shadow-lg'
+              className='relative w-full h-64 md:h-72 rounded-2xl overflow-hidden shadow-lg'
             >
               <img 
                 src={legacyImage2} 
                 alt='Show Your Solidarity' 
                 className='w-full h-full object-cover'
-                style={{ filter: 'brightness(1.1) contrast(1.15) saturate(1.1)' }}
               />
             </motion.div>
           </div>

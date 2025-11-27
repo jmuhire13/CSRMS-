@@ -53,28 +53,28 @@ const Login = ({ onSwitchToSignup }) => {
       animate={{ opacity: 1, y: 0 }}
       className="w-full max-w-md mx-auto"
     >
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
+      <div className="text-center mb-6 md:mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold font-secondary" style={{ color: 'var(--navy-blue)' }}>
           Welcome Back
         </h2>
-        <p className="mt-2" style={{ color: 'var(--para)' }}>
+        <p className="mt-2 text-sm md:text-base" style={{ color: 'var(--para)' }}>
           Sign in to access your portal
         </p>
       </div>
 
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200">
+        <div className="mb-4 p-3 rounded-lg bg-gray-100 border border-gray-300 text-sm">
           <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
         <div>
-          <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--navy-blue)' }}>
+          <label className="block text-xs md:text-sm font-semibold mb-2" style={{ color: 'var(--navy-blue)' }}>
             Email Address
           </label>
           <div className="relative">
-            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2" style={{ color: 'var(--para)' }} />
+            <FaUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-sm" style={{ color: 'var(--para)' }} />
             <input
               type="email"
               name="email"

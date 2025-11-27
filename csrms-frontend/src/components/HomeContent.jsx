@@ -14,7 +14,7 @@ const HomeContent = ({ setActiveSection }) => {
       icon: FaHandHoldingHeart,
       title: 'Get Involved',
       description: 'Make a difference through donations, partnerships, volunteering, or legacy giving.',
-      color: '#E74C3C'
+      color: '#8B95A7'
     },
     {
       id: 'our-work',
@@ -40,7 +40,7 @@ const HomeContent = ({ setActiveSection }) => {
   ]
 
   return (
-    <div id='content' className='pt-24 sm:pt-28 pb-16 sm:pb-20 px-4' style={{ backgroundColor: 'var(--off-white)' }}>
+    <div id='content' className='pt-8 sm:pt-10 pb-16 sm:pb-20 px-4' style={{ backgroundColor: 'var(--off-white)' }}>
       <div className='container mx-auto max-w-6xl'>
         
         {/* Section Header */}

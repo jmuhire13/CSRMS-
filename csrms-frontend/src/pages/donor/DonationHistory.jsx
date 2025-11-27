@@ -77,9 +77,9 @@ const DonationHistory = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case 'completed': return <FaCheck className="text-green-600" />;
-      case 'pending': return <FaClock className="text-yellow-600" />;
-      case 'failed': return <FaTimes className="text-red-600" />;
+      case 'completed': return <FaCheck className="text-blue-700" />;
+      case 'pending': return <FaClock className="text-gray-600" />;
+      case 'failed': return <FaTimes className="text-gray-700" />;
       default: return <FaClock className="text-gray-600" />;
     }
   };

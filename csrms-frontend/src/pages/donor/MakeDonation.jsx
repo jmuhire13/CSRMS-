@@ -26,6 +26,12 @@ const MakeDonation = () => {
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [preSelectedChild, setPreSelectedChild] = useState(null);
+  const [cardDetails, setCardDetails] = useState({
+    cardNumber: '',
+    expiryDate: '',
+    cvc: '',
+    cardholderName: ''
+  });
 
   useEffect(() => {
     // Listen for donate to specific child event
@@ -55,7 +61,6 @@ const MakeDonation = () => {
 
   const paymentMethods = [
     { value: 'mobile-money', label: 'Mobile Money', icon: FaMobileAlt, popular: true },
-    { value: 'credit-card', label: 'Credit Card', icon: FaCreditCard, popular: true },
     { value: 'bank-transfer', label: 'Bank Transfer', icon: FaUniversity, popular: false },
     { value: 'paypal', label: 'PayPal', icon: FaPaypal, popular: false }
   ];
@@ -88,16 +93,70 @@ const MakeDonation = () => {
       if (donationData.dedicatedTo.length === 0) delete donationData.dedicatedTo;
       if (!donationData.message) delete donationData.message;
 
+      // Create donation directly (demo mode for all payment methods)
       const response = await api.createDonation(donationData);
       
       if (response.success) {
-        setSuccess(true);
-        setStep(4);
+        // Redirect to donor dashboard with success param
+        window.location.href = '/portal/dashboard/donor?donation=success';
+        return;
       }
     } catch (err) {
-      console.error('Failed to create donation:', err);
+      console.error('Failed to process donation:', err);
       alert('Failed to process donation: ' + err.message);
     } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const handleCardPayment = async (e) => {
+    e.preventDefault();
+    
+    console.log('💳 Processing card payment...');
+    console.log('Card Details:', cardDetails);
+    console.log('Form Data:', formData);
+    
+    setSubmitting(true);
+
+    try {
+      const finalAmount = formData.amount || parseFloat(formData.customAmount);
+      
+      // Validate card details
+      if (!cardDetails.cardNumber || !cardDetails.expiryDate || !cardDetails.cvc || !cardDetails.cardholderName) {
+        alert('Please fill in all card details');
+        setSubmitting(false);
+        return;
+      }
+
+      const donationData = {
+        ...formData,
+        amount: finalAmount,
+        currency: 'RWF',
+        paymentMethod: 'credit-card', // Ensure payment method is set correctly
+        cardNumber: cardDetails.cardNumber.replace(/\s/g, ''), // Remove spaces
+      };
+
+      // Remove empty fields
+      delete donationData.customAmount;
+      if (donationData.dedicatedTo.length === 0) delete donationData.dedicatedTo;
+      if (!donationData.message) delete donationData.message;
+
+      console.log('Sending card payment request:', donationData);
+
+      const response = await api.processCardPayment(donationData);
+      
+      console.log('Card payment response:', response);
+      
+      if (response.success) {
+        console.log('✅ Payment successful! Redirecting...');
+        // Redirect to donor dashboard with success param
+        window.location.href = '/portal/dashboard/donor?donation=success';
+      } else {
+        throw new Error(response.message || 'Payment failed');
+      }
+    } catch (err) {
+      console.error('❌ Payment failed:', err);
+      alert('Payment failed: ' + err.message);
       setSubmitting(false);
     }
   };
@@ -113,6 +172,12 @@ const MakeDonation = () => {
       message: '',
       isAnonymous: false
     });
+    setCardDetails({
+      cardNumber: '',
+      expiryDate: '',
+      cvc: '',
+      cardholderName: ''
+    });
     setStep(1);
     setSuccess(false);
     setPreSelectedChild(null);
@@ -123,15 +188,15 @@ const MakeDonation = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="flex items-center justify-center min-h-[500px]"
+        className="flex items-center justify-center min-h-[500px] p-4"
       >
-        <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full text-center">
-          <div className="bg-green-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
-            <FaCheck className="text-green-600 text-4xl" />
+        <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 max-w-md w-full text-center">
+          <div className="bg-blue-100 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6">
+            <FaCheck className="text-blue-700 text-4xl" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h2>
           <p className="text-gray-600 mb-6">
-            Your donation of <span className="font-bold text-green-600">
+            Your donation of <span className="font-bold text-blue-700">
               {(formData.amount || formData.customAmount).toLocaleString()} RWF
             </span> has been processed successfully.
           </p>
@@ -158,15 +223,15 @@ const MakeDonation = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <div className="max-w-4xl mx-auto space-y-4 md:space-y-6 p-3 md:p-4 lg:p-0">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Make a Donation</h1>
-        <p className="text-gray-600 mt-1">Support children and families in need</p>
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900">Make a Donation</h1>
+        <p className="text-sm md:text-base text-gray-600 mt-1">Support children and families in need</p>
       </div>
 
       {/* Progress Steps */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
         <div className="flex items-center justify-between">
           {[
             { num: 1, label: 'Amount' },
@@ -174,18 +239,18 @@ const MakeDonation = () => {
             { num: 3, label: 'Payment' }
           ].map((s, idx) => (
             <React.Fragment key={s.num}>
-              <div className="flex items-center gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${
+              <div className="flex items-center gap-2 md:gap-3">
+                <div className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-sm md:text-base ${
                   step >= s.num ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
                 }`}>
                   {s.num}
                 </div>
-                <span className={`font-medium ${step >= s.num ? 'text-gray-900' : 'text-gray-500'}`}>
+                <span className={`font-medium text-xs md:text-sm ${step >= s.num ? 'text-gray-900' : 'text-gray-500'}`}>
                   {s.label}
                 </span>
               </div>
               {idx < 2 && (
-                <div className={`flex-1 h-1 mx-4 ${step > s.num ? 'bg-blue-600' : 'bg-gray-200'}`} />
+                <div className={`flex-1 h-1 mx-2 md:mx-4 ${step > s.num ? 'bg-blue-600' : 'bg-gray-200'}`} />
               )}
             </React.Fragment>
           ))}
@@ -443,7 +508,7 @@ const MakeDonation = () => {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2"
+                className="flex-1 px-6 py-3 bg-blue-700 hover:bg-blue-800 disabled:bg-gray-300 text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>
@@ -458,6 +523,151 @@ const MakeDonation = () => {
                 )}
               </button>
             </div>
+          </motion.div>
+        )}
+
+        {/* Step 4: Card Details (for credit card payments) */}
+        {step === 4 && formData.paymentMethod === 'credit-card' && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 space-y-6"
+          >
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900 mb-2">💳 Enter Card Details</h2>
+              <p className="text-gray-600">Complete your donation securely (Demo Mode)</p>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+              <p className="text-sm text-blue-800 font-medium mb-2">🧪 Test Mode - Use Test Cards</p>
+              <div className="text-xs text-blue-700 space-y-1">
+                <p>✅ Success: <code className="bg-white px-2 py-1 rounded">4242 4242 4242 4242</code></p>
+                <p>❌ Decline: <code className="bg-white px-2 py-1 rounded">4000 0000 0000 9995</code></p>
+                <p className="mt-2">Use any future expiry (12/34), any CVC (123), and any name</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleCardPayment} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Card Number
+                </label>
+                <input
+                  type="text"
+                  value={cardDetails.cardNumber}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\s/g, '');
+                    if (value.length <= 16 && /^\d*$/.test(value)) {
+                      const formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+                      setCardDetails({ ...cardDetails, cardNumber: formatted });
+                    }
+                  }}
+                  placeholder="4242 4242 4242 4242"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Expiry Date
+                  </label>
+                  <input
+                    type="text"
+                    value={cardDetails.expiryDate}
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/\D/g, '');
+                      if (value.length >= 2) {
+                        value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                      }
+                      if (value.length <= 5) {
+                        setCardDetails({ ...cardDetails, expiryDate: value });
+                      }
+                    }}
+                    placeholder="MM/YY"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    CVC
+                  </label>
+                  <input
+                    type="text"
+                    value={cardDetails.cvc}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, '');
+                      if (value.length <= 3) {
+                        setCardDetails({ ...cardDetails, cvc: value });
+                      }
+                    }}
+                    placeholder="123"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Cardholder Name
+                </label>
+                <input
+                  type="text"
+                  value={cardDetails.cardholderName}
+                  onChange={(e) => setCardDetails({ ...cardDetails, cardholderName: e.target.value })}
+                  placeholder="John Doe"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+              </div>
+
+              {/* Summary */}
+              <div className="bg-gray-50 rounded-lg p-4">
+                <h3 className="font-semibold text-gray-900 mb-2">Payment Summary</h3>
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-gray-600">Donation Amount</span>
+                  <span className="font-medium">{(formData.amount || formData.customAmount).toLocaleString()} RWF</span>
+                </div>
+                <div className="flex justify-between text-sm border-t border-gray-300 pt-2 mt-2">
+                  <span className="font-semibold text-gray-900">Total to Pay</span>
+                  <span className="text-lg font-bold text-blue-700">
+                    {(formData.amount || formData.customAmount).toLocaleString()} RWF
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => setStep(3)}
+                  disabled={submitting}
+                  className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-colors font-medium"
+                >
+                  Back
+                </button>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="flex-1 px-6 py-3 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white rounded-lg transition-colors font-medium flex items-center justify-center gap-2"
+                >
+                  {submitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      Processing Payment...
+                    </>
+                  ) : (
+                    <>
+                      <FaCreditCard />
+                      Pay {(formData.amount || formData.customAmount).toLocaleString()} RWF
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
           </motion.div>
         )}
       </form>

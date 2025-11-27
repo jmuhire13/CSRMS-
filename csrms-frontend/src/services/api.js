@@ -310,6 +310,23 @@ class ApiService {
     return this.request(`/admin/donations/trends?year=${year || new Date().getFullYear()}`);
   }
 
+  // Resource Request Management (Admin)
+  async getAllResourceRequests(page = 1, limit = 20, filters = {}) {
+    const queryParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+      ...filters,
+    });
+    return this.request(`/admin/resource-requests?${queryParams}`);
+  }
+
+  async updateResourceRequestStatus(requestId, status, responseNote) {
+    return this.request(`/admin/resource-requests/${requestId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status, responseNote }),
+    });
+  }
+
   // Password Management
   async changePassword(currentPassword, newPassword) {
     return this.request('/auth/change-password', {
@@ -469,7 +486,7 @@ class ApiService {
     return this.request(`/donations/donor/history?${queryParams}`);
   }
 
-  // Create a new donation
+  // Create a new donation (for non-card payments)
   async createDonation(donationData) {
     return this.request('/donations/donor/donate', {
       method: 'POST',
@@ -480,6 +497,14 @@ class ApiService {
   // Get children in need
   async getChildrenInNeed() {
     return this.request('/children/in-need');
+  }
+
+  // Process card payment (demo mode)
+  async processCardPayment(donationData) {
+    return this.request('/donations/process-card-payment', {
+      method: 'POST',
+      body: JSON.stringify(donationData),
+    });
   }
 
   // Logout

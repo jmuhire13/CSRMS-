@@ -37,10 +37,10 @@ export default function DashboardOverview() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
+      <div className="flex items-center justify-center min-h-96 p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading dashboard...</p>
+          <p className="mt-4 text-sm text-gray-600">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -48,7 +48,7 @@ export default function DashboardOverview() {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+      <div className="bg-gray-100 border border-gray-300 text-gray-800 px-3 md:px-4 py-3 mx-3 md:mx-4 rounded relative text-sm">
         <strong className="font-bold">Error!</strong>
         <span className="block sm:inline"> {error}</span>
       </div>
@@ -60,24 +60,24 @@ export default function DashboardOverview() {
       title: 'My Children',
       value: stats?.totalChildren || 0,
       icon: Users,
-      color: 'bg-blue-500',
+      color: 'bg-blue-700',
       bgLight: 'bg-blue-50',
-      textLight: 'text-blue-700'
+      textLight: 'text-blue-800'
     },
     {
       title: 'Recent Assessments',
       value: stats?.recentAssessments || 0,
       icon: FileText,
-      color: 'bg-green-500',
-      bgLight: 'bg-green-50',
-      textLight: 'text-green-700',
+      color: 'bg-blue-600',
+      bgLight: 'bg-blue-50',
+      textLight: 'text-blue-700',
       subtitle: 'Last 30 days'
     },
     {
       title: 'Pending Requests',
       value: stats?.pendingRequests || 0,
       icon: Package,
-      color: 'bg-amber-500',
+      color: 'bg-gray-600',
       bgLight: 'bg-amber-50',
       textLight: 'text-amber-700'
     },
@@ -188,42 +188,42 @@ export default function DashboardOverview() {
           transition={{ delay: 0.6 }}
           className="bg-white rounded-xl p-6 shadow-sm"
         >
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <AlertCircle className="w-5 h-5 text-red-600" />
+          <h3 className="text-base font-semibold text-gray-900 mb-4 flex items-center gap-2">
+            <AlertCircle className="w-5 h-5 text-gray-700" />
             Important Reminders
           </h3>
           <div className="space-y-3">
             {stats?.childrenNeedingAttention > 0 ? (
-              <div className="px-4 py-3 bg-red-50 border-l-4 border-red-500 rounded">
-                <p className="font-medium text-red-900">Urgent Assessments</p>
-                <p className="text-sm text-red-700">
+              <div className="px-4 py-3 bg-gray-100 border-l-4 border-gray-600 rounded">
+                <p className="text-sm font-medium text-gray-900">Urgent Assessments</p>
+                <p className="text-xs text-gray-700">
                   {stats.childrenNeedingAttention} {stats.childrenNeedingAttention === 1 ? 'child needs' : 'children need'} immediate attention
                 </p>
               </div>
             ) : null}
             
             {stats?.pendingRequests > 0 ? (
-              <div className="px-4 py-3 bg-amber-50 border-l-4 border-amber-500 rounded">
-                <p className="font-medium text-amber-900">Pending Requests</p>
-                <p className="text-sm text-amber-700">
+              <div className="px-4 py-3 bg-blue-50 border-l-4 border-blue-600 rounded">
+                <p className="text-sm font-medium text-blue-900">Pending Requests</p>
+                <p className="text-xs text-blue-700">
                   You have {stats.pendingRequests} pending resource {stats.pendingRequests === 1 ? 'request' : 'requests'}
                 </p>
               </div>
             ) : null}
             
             {stats?.unreadMessages > 0 ? (
-              <div className="px-4 py-3 bg-purple-50 border-l-4 border-purple-500 rounded">
-                <p className="font-medium text-purple-900">New Messages</p>
-                <p className="text-sm text-purple-700">
+              <div className="px-4 py-3 bg-gray-50 border-l-4 border-gray-500 rounded">
+                <p className="text-sm font-medium text-gray-900">New Messages</p>
+                <p className="text-xs text-gray-700">
                   {stats.unreadMessages} unread {stats.unreadMessages === 1 ? 'message' : 'messages'} from social workers
                 </p>
               </div>
             ) : null}
 
             {stats?.childrenNeedingAttention === 0 && stats?.pendingRequests === 0 && stats?.unreadMessages === 0 ? (
-              <div className="px-4 py-3 bg-green-50 border-l-4 border-green-500 rounded">
-                <p className="font-medium text-green-900">All Caught Up!</p>
-                <p className="text-sm text-green-700">No urgent items at the moment</p>
+              <div className="px-4 py-3 bg-blue-50 border-l-4 border-blue-600 rounded">
+                <p className="text-sm font-medium text-blue-900">All Caught Up!</p>
+                <p className="text-xs text-blue-700">No urgent items at the moment</p>
               </div>
             ) : null}
           </div>

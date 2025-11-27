@@ -4,7 +4,7 @@ const donationSchema = new mongoose.Schema({
   donationId: {
     type: String,
     unique: true,
-    required: true
+    sparse: true // Allow null values temporarily until pre-save hook generates it
   },
   donor: {
     type: mongoose.Schema.Types.ObjectId,
@@ -79,20 +79,25 @@ const donationSchema = new mongoose.Schema({
 
 // Generate donation ID before saving
 donationSchema.pre('save', async function(next) {
-  if (!this.donationId) {
-    const year = new Date().getFullYear();
-    const count = await this.constructor.countDocuments();
-    this.donationId = `DON-${year}-${String(count + 1).padStart(3, '0')}`;
+  try {
+    if (!this.donationId) {
+      const year = new Date().getFullYear();
+      const count = await this.constructor.countDocuments();
+      // Use timestamp for better uniqueness
+      this.donationId = `DON-${year}-${String(count + 1).padStart(4, '0')}-${Date.now().toString().slice(-4)}`;
+    }
+    
+    // Generate receipt number if completed
+    if (this.status === 'completed' && !this.receipt.receiptNumber) {
+      this.receipt.receiptNumber = `RCP-${this.donationId}`;
+      this.receipt.issued = true;
+      this.receipt.issuedDate = new Date();
+    }
+    
+    next();
+  } catch (error) {
+    next(error);
   }
-  
-  // Generate receipt number if completed
-  if (this.status === 'completed' && !this.receipt.receiptNumber) {
-    this.receipt.receiptNumber = `RCP-${this.donationId}`;
-    this.receipt.issued = true;
-    this.receipt.issuedDate = new Date();
-  }
-  
-  next();
 });
 
 module.exports = mongoose.model('Donation', donationSchema);

@@ -57,45 +57,45 @@ const DashboardOverview = () => {
   const StatCard = ({ title, value, icon: Icon, color, subtitle, onClick }) => (
     <div
       onClick={onClick}
-      className="p-6 rounded-xl shadow-sm border bg-white cursor-pointer hover:shadow-md transition-all"
+      className="p-4 md:p-5 lg:p-6 rounded-xl shadow-sm border bg-white cursor-pointer hover:shadow-md transition-all"
     >
-      <div className="flex items-start justify-between mb-4">
-        <div className="p-3 rounded-lg" style={{ backgroundColor: color + '20' }}>
-          <Icon size={24} style={{ color }} />
+      <div className="flex items-start justify-between mb-3 md:mb-4">
+        <div className="p-2 md:p-3 rounded-lg" style={{ backgroundColor: color + '20' }}>
+          <Icon size={20} className="md:w-6 md:h-6" style={{ color }} />
         </div>
       </div>
-      <h3 className="text-2xl font-bold mb-1" style={{ color }}>
+      <h3 className="text-lg md:text-xl font-bold mb-1" style={{ color }}>
         {loading ? '...' : typeof value === 'number' ? value.toLocaleString() : value}
       </h3>
-      <p className="text-lg font-semibold mb-1 text-gray-800">{title}</p>
-      {subtitle && <p className="text-sm text-gray-600">{subtitle}</p>}
+      <p className="text-sm md:text-base font-semibold mb-1 text-gray-800">{title}</p>
+      {subtitle && <p className="text-xs text-gray-600">{subtitle}</p>}
     </div>
   );
 
   return (
-    <div className="p-6">
+    <div className="p-3 md:p-4 lg:p-6">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p className="text-gray-600 mt-1">Welcome back! Here's what's happening in the system.</p>
+      <div className="mb-4 md:mb-6">
+        <h1 className="text-xl md:text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+        <p className="text-xs md:text-sm text-gray-600 mt-1">Welcome back! Here's what's happening in the system.</p>
       </div>
 
       {/* System Status */}
-      <div className="mb-6 p-4 rounded-lg border-l-4 bg-green-50 border-green-500 flex items-center gap-3">
-        <FaCheckCircle className="text-green-600" size={20} />
-        <div>
-          <p className="font-semibold text-green-800">All Systems Operational</p>
-          <p className="text-sm text-green-700">System is running smoothly</p>
+      <div className="mb-4 md:mb-6 p-3 md:p-4 rounded-lg border-l-4 bg-blue-50 border-blue-700 flex items-center gap-2 md:gap-3">
+        <FaCheckCircle className="text-blue-700 shrink-0" size={18} />
+        <div className="min-w-0">
+          <p className="text-xs md:text-sm font-semibold text-blue-800">All Systems Operational</p>
+          <p className="text-xs text-blue-700">System is running smoothly</p>
         </div>
       </div>
 
       {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-6 mb-6 md:mb-8">
         <StatCard
           title="Total Children"
           value={stats.totalChildren}
           icon={FaChild}
-          color="#3b82f6"
+          color="#2C3E5F"
           subtitle="Registered in system"
           onClick={() => window.dispatchEvent(new CustomEvent('tabChange', { detail: { tab: 'children', role: 'admin' } }))}
         />
@@ -103,7 +103,7 @@ const DashboardOverview = () => {
           title="Social Workers"
           value={stats.totalSocialWorkers}
           icon={FaHandsHelping}
-          color="#10b981"
+          color="#3D5175"
           subtitle="Active field staff"
           onClick={() => window.dispatchEvent(new CustomEvent('tabChange', { detail: { tab: 'social-workers', role: 'admin' } }))}
         />
@@ -111,7 +111,7 @@ const DashboardOverview = () => {
           title="Caregivers"
           value={stats.totalCaregivers}
           icon={FaUsers}
-          color="#f59e0b"
+          color="#8B95A7"
           subtitle="Registered caregivers"
           onClick={() => window.dispatchEvent(new CustomEvent('tabChange', { detail: { tab: 'caregivers', role: 'admin' } }))}
         />
@@ -119,19 +119,19 @@ const DashboardOverview = () => {
           title="Total Donations"
           value={`$${(stats.completedDonations / 1000).toFixed(1)}k`}
           icon={FaDonate}
-          color="#8b5cf6"
+          color="#B8C1D1"
           subtitle="Completed donations"
           onClick={() => window.dispatchEvent(new CustomEvent('tabChange', { detail: { tab: 'donations', role: 'admin' } }))}
         />
       </div>
 
       {/* Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
         {/* Children by District */}
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Children by District</h2>
+        <div className="bg-white rounded-xl shadow-sm border p-4 md:p-5 lg:p-6">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Children by District</h2>
           {loading ? (
-            <div className="text-center py-8 text-gray-500">Loading...</div>
+            <div className="text-center py-8 text-sm text-gray-500">Loading...</div>
           ) : childrenByDistrict.length > 0 ? (
             <div className="space-y-3">
               {childrenByDistrict.map((district, index) => (
@@ -141,10 +141,10 @@ const DashboardOverview = () => {
                       <span className="text-sm font-medium text-gray-700">{district._id || 'Unknown'}</span>
                       <span className="text-sm font-semibold text-gray-900">{district.count}</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div className="w-full bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-blue-600 h-2 rounded-full"
-                        style={{ width: `${(district.count / stats.totalChildren) * 100}%` }}
+                        className="h-2 rounded-full"
+                        style={{ width: `${(district.count / stats.totalChildren) * 100}%`, backgroundColor: '#2C3E5F' }}
                       ></div>
                     </div>
                   </div>
@@ -157,10 +157,10 @@ const DashboardOverview = () => {
         </div>
 
         {/* Donations by Category */}
-        <div className="bg-white rounded-xl shadow-sm border p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Donations by Category</h2>
+        <div className="bg-white rounded-xl shadow-sm border p-4 md:p-5 lg:p-6">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Donations by Category</h2>
           {loading ? (
-            <div className="text-center py-8 text-gray-500">Loading...</div>
+            <div className="text-center py-8 text-sm text-gray-500">Loading...</div>
           ) : donationsByCategory.length > 0 ? (
             <div className="space-y-3">
               {donationsByCategory.map((category, index) => (

@@ -20,23 +20,21 @@ const VolunteerSection = ({ setActiveSection }) => {
       </div>
 
       {/* Hero Section */}
-      <div className='min-h-screen pt-8 px-4 pb-16 flex items-center' style={{ backgroundColor: 'var(--off-white)' }}>
+      <div className='pt-16 px-4 pb-12' style={{ backgroundColor: 'var(--off-white)' }}>
         <div className='container mx-auto max-w-5xl'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center'>
             {/* Left - Text */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className='text-5xl sm:text-6xl md:text-7xl font-bold font-secondary mb-6' style={{ color: 'var(--navy-blue)' }}>
+              <h1 className='text-3xl sm:text-4xl md:text-5xl font-bold font-secondary mb-4' style={{ color: 'var(--navy-blue)' }}>
                 Volunteering
               </h1>
               
-              <p className='text-base sm:text-lg md:text-xl leading-relaxed' style={{ color: 'var(--para)' }}>
-                Bring your skills—tech or on-ground—to transform child welfare in Rwanda. 
-                Scale Compassionate Rwanda and reach vulnerable children in need of healthcare, 
-                nutrition, and education.
+              <p className='text-sm sm:text-base leading-relaxed' style={{ color: 'var(--para)' }}>
+                Bring your skills—tech or on-ground—to transform child welfare in Rwanda. Scale Compassionate Rwanda and reach vulnerable children in need of healthcare, nutrition, and education.
               </p>
             </motion.div>
 
@@ -45,13 +43,12 @@ const VolunteerSection = ({ setActiveSection }) => {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className='relative w-full h-80 md:h-96 rounded-3xl overflow-hidden shadow-lg'
+              className='relative w-full h-64 md:h-72 rounded-2xl overflow-hidden shadow-lg'
             >
               <img 
                 src={volunteerImage1} 
                 alt='Volunteering' 
                 className='w-full h-full object-cover'
-                style={{ filter: 'brightness(1.1) contrast(1.15) saturate(1.1)' }}
               />
             </motion.div>
           </div>
@@ -59,21 +56,20 @@ const VolunteerSection = ({ setActiveSection }) => {
       </div>
 
       {/* Fundraising Content */}
-      <div className='px-4 py-16' style={{ backgroundColor: 'var(--white)' }}>
+      <div className='px-4 py-12' style={{ backgroundColor: 'var(--white)' }}>
         <div className='container mx-auto max-w-5xl'>
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center'>
             {/* Left - Image */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className='relative w-full h-80 md:h-96 rounded-3xl overflow-hidden shadow-lg'
+              className='relative w-full h-64 md:h-72 rounded-2xl overflow-hidden shadow-lg'
             >
               <img 
                 src={volunteerImage2} 
                 alt='Volunteer Roles' 
                 className='w-full h-full object-cover'
-                style={{ filter: 'brightness(1.1) contrast(1.15) saturate(1.1)' }}
               />
             </motion.div>
 
@@ -83,27 +79,20 @@ const VolunteerSection = ({ setActiveSection }) => {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <h2 className='text-4xl sm:text-5xl font-bold font-secondary mb-6' style={{ color: 'var(--navy-blue)' }}>
+              <h2 className='text-2xl sm:text-3xl font-bold font-secondary mb-4' style={{ color: 'var(--navy-blue)' }}>
                 Multiple Ways to Contribute Your Skills
               </h2>
               
-              <p className='text-base sm:text-lg leading-relaxed mb-6' style={{ color: 'var(--para)' }}>
-                Compassionate Rwanda needs diverse expertise. Whether you're a software developer, 
-                social worker, administrator, or community advocate, your skills directly 
-                impact vulnerable children's access to healthcare, nutrition, and education.
+              <p className='text-sm sm:text-base leading-relaxed mb-4' style={{ color: 'var(--para)' }}>
+                Compassionate Rwanda needs diverse expertise. Whether you're a software developer, social worker, administrator, or community advocate, your skills directly impact vulnerable children's access to healthcare, nutrition, and education.
               </p>
               
-              <p className='text-base sm:text-lg leading-relaxed mb-6' style={{ color: 'var(--para)' }}>
-                Social Workers & Field Officers register children's needs in Compassionate Rwanda, 
-                update health records, and track resource delivery in real-time. 
-                Developers improve the platform. Data analysts create impact reports. 
-                Administrators ensure data quality and accountability.
+              <p className='text-sm sm:text-base leading-relaxed mb-4' style={{ color: 'var(--para)' }}>
+                Social Workers & Field Officers register children's needs in Compassionate Rwanda, update health records, and track resource delivery in real-time. Developers improve the platform. Data analysts create impact reports. Administrators ensure data quality and accountability.
               </p>
 
-              <p className='text-base sm:text-lg leading-relaxed' style={{ color: 'var(--para)' }}>
-                Together, we reduce resource waste by 30%, improve emergency response 
-                times, and ensure no child falls through the cracks. Join our mission 
-                to build Compassionate Rwanda through technology and compassion.
+              <p className='text-sm sm:text-base leading-relaxed' style={{ color: 'var(--para)' }}>
+                Together, we reduce resource waste by 30%, improve emergency response times, and ensure no child falls through the cracks. Join our mission to build Compassionate Rwanda through technology and compassion.
               </p>
             </motion.div>
           </div>

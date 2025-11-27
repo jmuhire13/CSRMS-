@@ -68,7 +68,7 @@ const ChangePassword = () => {
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <div className="bg-gray-100 border border-gray-400 text-gray-800 px-4 py-3 rounded text-sm">
               {error}
             </div>
           )}

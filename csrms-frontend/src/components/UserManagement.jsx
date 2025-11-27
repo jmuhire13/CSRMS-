@@ -157,7 +157,7 @@ const UserManagement = ({ userType }) => {
       {/* Alerts */}
       {alert && !tempPassword && (
         <div className={`px-4 py-3 rounded ${
-          alert.type === 'error' ? 'bg-red-50 border border-red-400 text-red-700' : 'bg-green-50 border border-green-400 text-green-700'
+          alert.type === 'error' ? 'bg-gray-100 border border-gray-400 text-gray-800' : 'bg-blue-50 border border-blue-400 text-blue-800'
         }`}>
           {alert.message}
         </div>
@@ -167,7 +167,7 @@ const UserManagement = ({ userType }) => {
       {tempPassword && (
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <div className="text-center py-4">
-            <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
               <FaCheckCircle className="w-8 h-8 text-green-600" />
             </div>
             <h4 className="text-xl font-bold text-gray-900 mb-2">
@@ -354,7 +354,7 @@ const UserManagement = ({ userType }) => {
                       Generate
                     </button>
                   </div>
-                  <div className="flex items-start gap-2 text-sm text-gray-600 bg-amber-50 p-3 rounded-lg border border-amber-200">
+                  <div className="flex items-start gap-2 text-xs text-gray-600 bg-gray-50 p-3 rounded-lg border border-gray-200">
                     <svg className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                     </svg>
@@ -458,7 +458,7 @@ const UserManagement = ({ userType }) => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      user.isActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      user.isActive ? 'bg-blue-100 text-blue-800' : 'bg-gray-200 text-gray-700'
                     }`}>
                       {user.isActive ? 'Active' : 'Inactive'}
                     </span>

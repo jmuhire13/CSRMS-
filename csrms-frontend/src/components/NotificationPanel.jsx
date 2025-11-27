@@ -68,7 +68,7 @@ const NotificationPanel = ({ isOpen, onClose }) => {
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
-            className="fixed right-0 top-0 h-full w-96 bg-white shadow-xl z-50 overflow-hidden"
+            className="fixed right-0 top-0 h-full w-full sm:w-96 max-w-full bg-white shadow-xl z-50 overflow-hidden"
           >
             <div className="flex items-center justify-between p-4 border-b" style={{ borderColor: 'var(--pale-blue)' }}>
               <h3 className="text-lg font-bold" style={{ color: 'var(--navy-blue)' }}>
@@ -117,9 +117,9 @@ const NotificationPanel = ({ isOpen, onClose }) => {
                           </p>
                           <div className="flex items-center justify-between">
                             <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                              alert.priority === 'critical' ? 'bg-red-100 text-red-800' :
-                              alert.priority === 'high' ? 'bg-orange-100 text-orange-800' :
-                              'bg-yellow-100 text-yellow-800'
+                              alert.priority === 'critical' ? 'bg-gray-300 text-gray-800' :
+                              alert.priority === 'high' ? 'bg-blue-200 text-blue-900' :
+                              'bg-gray-200 text-gray-700'
                             }`}>
                               {alert.priority.toUpperCase()}
                             </span>

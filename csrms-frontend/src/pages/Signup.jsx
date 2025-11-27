@@ -80,7 +80,7 @@ const Signup = ({ onSwitchToLogin }) => {
       </div>
 
       {error && (
-        <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200">
+        <div className="mb-4 p-3 rounded-lg bg-gray-100 border border-gray-300 text-sm">
           <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}

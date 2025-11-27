@@ -45,8 +45,8 @@ const DashboardOverview = () => {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <p className="text-red-800">{error}</p>
+      <div className="bg-gray-100 border border-gray-300 rounded-lg p-4">
+        <p className="text-sm text-gray-800">{error}</p>
       </div>
     );
   }
@@ -58,31 +58,31 @@ const DashboardOverview = () => {
       icon: FaDollarSign,
       color: 'blue',
       bgColor: 'bg-blue-50',
-      iconColor: 'text-blue-600'
+      iconColor: 'text-blue-800'
     },
     {
       title: 'This Year',
       value: `${stats?.thisYearTotal?.toLocaleString() || 0} RWF`,
       icon: FaCalendarAlt,
-      color: 'green',
-      bgColor: 'bg-green-50',
-      iconColor: 'text-green-600'
+      color: 'blue',
+      bgColor: 'bg-blue-50',
+      iconColor: 'text-blue-700'
     },
     {
       title: 'This Month',
       value: `${stats?.thisMonthTotal?.toLocaleString() || 0} RWF`,
       icon: FaChartLine,
-      color: 'purple',
-      bgColor: 'bg-purple-50',
-      iconColor: 'text-purple-600'
+      color: 'gray',
+      bgColor: 'bg-gray-50',
+      iconColor: 'text-gray-700'
     },
     {
       title: 'Children Supported',
       value: stats?.childrenSupported || 0,
       icon: FaChild,
-      color: 'pink',
-      bgColor: 'bg-pink-50',
-      iconColor: 'text-pink-600'
+      color: 'gray',
+      bgColor: 'bg-gray-50',
+      iconColor: 'text-gray-600'
     }
   ];
 
@@ -90,11 +90,11 @@ const DashboardOverview = () => {
   const maxAmount = Math.max(...(stats?.monthlyTrend?.map(m => m.amount) || [0]));
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 p-3 md:p-4 lg:p-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Donor Dashboard</h1>
-        <p className="text-gray-600 mt-1">Track your impact and donation history</p>
+        <h1 className="text-lg md:text-2xl font-bold text-gray-900">Donor Dashboard</h1>
+        <p className="text-xs md:text-sm text-gray-600 mt-1">Track your impact and donation history</p>
       </div>
 
       {/* Stats Cards */}

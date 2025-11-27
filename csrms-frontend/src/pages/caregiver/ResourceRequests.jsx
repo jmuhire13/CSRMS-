@@ -121,14 +121,14 @@ export default function ResourceRequests() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Package className="w-7 h-7 text-green-600" />
+            <Package className="w-7 h-7 text-blue-700" />
             Resource Requests
           </h2>
           <p className="text-gray-600 mt-1">Request resources for children's needs</p>
         </div>
         <button
           onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-colors flex items-center gap-2"
         >
           <Plus className="w-5 h-5" />
           New Request
@@ -189,7 +189,7 @@ export default function ResourceRequests() {
       {loading ? (
         <div className="flex items-center justify-center min-h-96">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700 mx-auto"></div>
             <p className="mt-4 text-gray-600">Loading requests...</p>
           </div>
         </div>
@@ -199,7 +199,7 @@ export default function ResourceRequests() {
           <p className="mt-4 text-gray-500">No resource requests found</p>
           <button
             onClick={() => setShowCreateModal(true)}
-            className="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
+            className="mt-4 px-4 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800"
           >
             Create Your First Request
           </button>
@@ -312,7 +312,7 @@ export default function ResourceRequests() {
             <form onSubmit={handleCreateRequest} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Select Child <span className="text-red-500">*</span>
+                  Select Child <span className="text-gray-800">*</span>
                 </label>
                 <select
                   required

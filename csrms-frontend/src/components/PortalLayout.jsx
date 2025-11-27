@@ -7,9 +7,9 @@ const PortalLayout = () => {
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--off-white)' }}>
       <PortalHeader />
-      <div className="flex pt-16">
+      <div className="flex pt-14 md:pt-16">
         <PortalSidebar />
-        <main className="flex-1 lg:ml-64">
+        <main className="flex-1 lg:ml-64 w-full">
           <Outlet />
         </main>
       </div>
