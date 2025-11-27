@@ -40,6 +40,10 @@ const childSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  assignedCaregiver: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
   status: {
     type: String,
     enum: ['active', 'inactive', 'graduated', 'transferred'],
@@ -134,6 +138,56 @@ childSchema.virtual('age').get(function() {
 // Virtual for full name
 childSchema.virtual('fullName').get(function() {
   return `${this.personalInfo.firstName} ${this.personalInfo.lastName}`;
+});
+
+// Virtual for firstName (flat access)
+childSchema.virtual('firstName').get(function() {
+  return this.personalInfo?.firstName;
+});
+
+// Virtual for lastName (flat access)
+childSchema.virtual('lastName').get(function() {
+  return this.personalInfo?.lastName;
+});
+
+// Virtual for dateOfBirth (flat access)
+childSchema.virtual('dateOfBirth').get(function() {
+  return this.personalInfo?.dateOfBirth;
+});
+
+// Virtual for gender (flat access)
+childSchema.virtual('gender').get(function() {
+  return this.personalInfo?.gender;
+});
+
+// Virtual for district (flat access)
+childSchema.virtual('district').get(function() {
+  return this.location?.district;
+});
+
+// Virtual for sector (flat access)
+childSchema.virtual('sector').get(function() {
+  return this.location?.sector;
+});
+
+// Virtual for cell (flat access)
+childSchema.virtual('cell').get(function() {
+  return this.guardian?.address?.cell;
+});
+
+// Virtual for village (flat access)
+childSchema.virtual('village').get(function() {
+  return this.guardian?.address?.village;
+});
+
+// Virtual for guardianName (flat access)
+childSchema.virtual('guardianName').get(function() {
+  return this.guardian?.name;
+});
+
+// Virtual for guardianContact (flat access)
+childSchema.virtual('guardianContact').get(function() {
+  return this.guardian?.phone;
 });
 
 childSchema.set('toJSON', { virtuals: true });

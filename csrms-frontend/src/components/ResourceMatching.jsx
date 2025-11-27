@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion } from 'motion/react'
 import { FaChild, FaHandsHelping, FaDollarSign, FaExclamationTriangle, FaCheckCircle } from 'react-icons/fa'
-import apiService from '../../services/api'
+import apiService from '../services/api'
 
 const ResourceMatching = () => {
   const [matches, setMatches] = useState([])

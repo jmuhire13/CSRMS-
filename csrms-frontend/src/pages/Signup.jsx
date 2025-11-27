@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'motion/react'
 import { FaEye, FaEyeSlash, FaUser, FaLock, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'
 import { useUser } from '../context/UserContext'
-import apiService from '../../services/api'
+import apiService from '../services/api'
 
 const Signup = ({ onSwitchToLogin }) => {
   const { login } = useUser()

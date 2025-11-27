@@ -94,17 +94,23 @@ router.post('/login', [
 
     const { email, password } = req.body;
 
+    console.log('Login attempt - Email:', email, 'Password:', password);
+
     // Find user and include password for comparison
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
+      console.log('User not found:', email);
       return res.status(401).json({
         success: false,
         message: 'Invalid credentials'
       });
     }
 
+    console.log('User found:', user.email, 'Role:', user.role);
+
     // Check if user is active
     if (!user.isActive) {
+      console.log('User account is deactivated:', email);
       return res.status(401).json({
         success: false,
         message: 'Account is deactivated. Please contact administrator.'
@@ -113,6 +119,7 @@ router.post('/login', [
 
     // Compare password
     const isMatch = await user.comparePassword(password);
+    console.log('Password match result:', isMatch);
     if (!isMatch) {
       return res.status(401).json({
         success: false,
@@ -126,11 +133,14 @@ router.post('/login', [
     // Generate token
     const token = generateToken(user._id);
 
+    const userProfile = user.getPublicProfile();
+
     res.json({
       success: true,
       message: 'Login successful',
       token,
-      user: user.getPublicProfile()
+      user: userProfile,
+      requirePasswordChange: user.requirePasswordChange
     });
 
   } catch (error) {
@@ -235,8 +245,9 @@ router.post('/change-password', auth, [
       });
     }
 
-    // Update password
+    // Update password and clear requirePasswordChange flag
     user.password = newPassword;
+    user.requirePasswordChange = false;
     await user.save();
 
     res.json({

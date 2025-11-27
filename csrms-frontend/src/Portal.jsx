@@ -10,10 +10,11 @@ import ProtectedRoute from './components/ProtectedRoute'
 // Import portal pages with lazy loading for better performance
 const Auth = React.lazy(() => import('./pages/Auth'))
 const RoleSelection = React.lazy(() => import('./pages/RoleSelection'))
-const AdminDashboard = React.lazy(() => import('./pages/AdminDashboard'))
-const SocialWorkerDashboard = React.lazy(() => import('./pages/SocialWorkerDashboard'))
-const CaregiverDashboard = React.lazy(() => import('./pages/CaregiverDashboard'))
-const DonorDashboard = React.lazy(() => import('./pages/DonorDashboard'))
+const ChangePassword = React.lazy(() => import('./pages/ChangePassword'))
+const AdminDashboard = React.lazy(() => import('./pages/admin/AdminDashboard'))
+const SocialWorkerDashboard = React.lazy(() => import('./pages/social-worker/SocialWorkerDashboard'))
+const CaregiverDashboard = React.lazy(() => import('./pages/caregiver/CaregiverDashboard'))
+const DonorDashboard = React.lazy(() => import('./pages/donor/DonorDashboard'))
 
 // Loading component
 const PortalLoading = () => (
@@ -123,6 +124,7 @@ const PortalWrapper = () => {
           <Route path="/" element={<Auth />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/select" element={<RoleSelection />} />
+          <Route path="/change-password" element={<ChangePassword />} />
           
           {/* Protected routes - Dashboards */}
           <Route path="/dashboard" element={<PortalLayout />}>

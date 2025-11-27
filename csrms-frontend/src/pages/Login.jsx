@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { motion } from 'motion/react'
 import { FaEye, FaEyeSlash, FaUser, FaLock } from 'react-icons/fa'
 import { useUser } from '../context/UserContext'
-import apiService from '../../services/api'
+import apiService from '../services/api'
 
 const Login = ({ onSwitchToSignup }) => {
   const { login } = useUser()
@@ -22,10 +22,16 @@ const Login = ({ onSwitchToSignup }) => {
     try {
       const response = await apiService.login(formData.email, formData.password)
       if (response.success) {
-        login(response.user)
-        // Navigate based on user role
-        const role = response.user.role
-        window.location.href = `/portal/dashboard/${role}`
+        login(response.user, response.requirePasswordChange)
+        
+        // Check if password change is required
+        if (response.requirePasswordChange) {
+          window.location.href = '/portal/change-password'
+        } else {
+          // Navigate based on user role
+          const role = response.user.role
+          window.location.href = `/portal/dashboard/${role}`
+        }
       }
     } catch (err) {
       setError(err.message || 'Login failed')

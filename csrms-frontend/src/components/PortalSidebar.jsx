@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useUser } from '../context/UserContext'
-import { FaHome, FaUsers, FaBox, FaChartBar, FaCog, FaHeart, FaDonate, FaUserCog } from 'react-icons/fa'
+import { FaHome, FaUsers, FaBox, FaChartBar, FaCog, FaHeart, FaDonate, FaUserCog, FaFileAlt, FaComment } from 'react-icons/fa'
 
 const PortalSidebar = () => {
   const { user } = useUser()
@@ -15,32 +15,33 @@ const PortalSidebar = () => {
       case 'admin':
         return [
           ...commonItems,
-          { icon: FaUsers, label: 'User Management', tab: 'user-management' },
-          { icon: FaBox, label: 'Resource Management', tab: 'resource-management' },
-          { icon: FaChartBar, label: 'Reports & Analytics', tab: 'reports' },
-          { icon: FaCog, label: 'System Settings', tab: 'settings' }
+          { icon: FaUsers, label: 'Social Workers', tab: 'social-workers' },
+          { icon: FaUserCog, label: 'Caregivers', tab: 'caregivers' },
+          { icon: FaHeart, label: 'Children', tab: 'children' },
+          { icon: FaDonate, label: 'Donations', tab: 'donations' },
+          { icon: FaChartBar, label: 'Reports', tab: 'reports' }
         ]
       case 'social-worker':
         return [
           ...commonItems,
-          { icon: FaUsers, label: 'Child Registry', tab: 'children' },
-          { icon: FaHeart, label: 'Active Cases', tab: 'cases' },
-          { icon: FaBox, label: 'Resource Requests', tab: 'resources' },
-          { icon: FaChartBar, label: 'My Reports', tab: 'reports' }
+          { icon: FaHeart, label: 'My Children', tab: 'children' },
+          { icon: FaBox, label: 'Cases', tab: 'cases' },
+          { icon: FaChartBar, label: 'Reports', tab: 'reports' }
         ]
       case 'caregiver':
         return [
           ...commonItems,
           { icon: FaHeart, label: 'My Children', tab: 'children' },
-          { icon: FaBox, label: 'Support Status', tab: 'support' },
-          { icon: FaUsers, label: 'Messages', tab: 'messages' }
+          { icon: FaFileAlt, label: 'Assessments', tab: 'assessments' },
+          { icon: FaBox, label: 'Resource Requests', tab: 'requests' },
+          { icon: FaComment, label: 'Messages', tab: 'messages' }
         ]
       case 'donor':
         return [
           ...commonItems,
-          { icon: FaDonate, label: 'My Donations', tab: 'donations' },
-          { icon: FaChartBar, label: 'Impact Dashboard', tab: 'impact' },
-          { icon: FaHeart, label: 'Supported Children', tab: 'children' }
+          { icon: FaHeart, label: 'Children in Need', tab: 'children' },
+          { icon: FaDonate, label: 'Make Donation', tab: 'donate' },
+          { icon: FaChartBar, label: 'Donation History', tab: 'history' }
         ]
       default:
         return commonItems
@@ -78,7 +79,7 @@ const PortalSidebar = () => {
                     setActiveTab(item.tab)
                     // Dispatch custom event to notify dashboard components
                     window.dispatchEvent(new CustomEvent('tabChange', { 
-                      detail: { tab: item.tab, role: user?.role } 
+                      detail: item.tab
                     }))
                   }
                 }}
@@ -96,13 +97,6 @@ const PortalSidebar = () => {
         </ul>
       </nav>
 
-      <div className="absolute bottom-4 left-4 right-4">
-        <div className="p-3 rounded-lg" style={{ backgroundColor: 'var(--off-white)' }}>
-          <p className="text-xs" style={{ color: 'var(--para)' }}>
-            <strong>Demo Mode:</strong> This portal uses sample data for demonstration purposes.
-          </p>
-        </div>
-      </div>
     </aside>
   )
 }

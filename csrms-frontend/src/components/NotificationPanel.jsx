@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { FaBell, FaExclamationTriangle, FaChild, FaUtensils, FaTimes } from 'react-icons/fa'
-import apiService from '../../services/api'
+import apiService from '../services/api'
 
 const NotificationPanel = ({ isOpen, onClose }) => {
   const [alerts, setAlerts] = useState([])

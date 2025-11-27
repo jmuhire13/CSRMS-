@@ -259,4 +259,72 @@ router.post('/:id/notes', auth, [
   }
 });
 
+// @route   GET /api/children/in-need
+// @desc    Get children in need with urgent resource requests (for donors)
+// @access  Private (Donor)
+router.get('/in-need', [auth, authorize('donor')], async (req, res) => {
+  try {
+    const ResourceRequest = require('../models/ResourceRequest');
+    
+    // Get pending resource requests with populated child info
+    const urgentRequests = await ResourceRequest.find({
+      status: { $in: ['pending', 'reviewing'] },
+      urgency: { $in: ['high', 'urgent'] }
+    })
+      .populate({
+        path: 'child',
+        select: 'personalInfo location guardian childId status',
+        match: { status: 'active' }
+      })
+      .populate('caregiver', 'name')
+      .sort({ urgency: -1, createdAt: -1 })
+      .limit(50);
+
+    // Filter out requests where child is null (inactive)
+    const validRequests = urgentRequests.filter(req => req.child !== null);
+
+    // Group by child
+    const childrenMap = new Map();
+    validRequests.forEach(request => {
+      const childId = request.child._id.toString();
+      if (!childrenMap.has(childId)) {
+        childrenMap.set(childId, {
+          child: request.child,
+          requests: []
+        });
+      }
+      childrenMap.get(childId).requests.push({
+        _id: request._id,
+        requestId: request.requestId,
+        category: request.category,
+        title: request.title,
+        description: request.description,
+        urgency: request.urgency,
+        estimatedCost: request.estimatedCost,
+        quantity: request.quantity,
+        createdAt: request.createdAt
+      });
+    });
+
+    const childrenInNeed = Array.from(childrenMap.values()).map(item => ({
+      ...item.child.toObject(),
+      urgentRequests: item.requests,
+      totalEstimatedCost: item.requests.reduce((sum, r) => sum + (r.estimatedCost || 0), 0)
+    }));
+
+    res.json({
+      success: true,
+      data: childrenInNeed,
+      count: childrenInNeed.length
+    });
+
+  } catch (error) {
+    console.error('Get children in need error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error'
+    });
+  }
+});
+
 module.exports = router;

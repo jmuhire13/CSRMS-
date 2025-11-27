@@ -17,7 +17,7 @@ import Blog from './components/Blog'
 import Footer from './components/Footer'
 import HomeContent from './components/HomeContent'
 import ContactUs from './components/ContactUs'  
-import Portal from './portal/Portal'
+import Portal from './Portal'
 
 // Website layout component
 const WebsiteLayout = ({ activeSection, setActiveSection }) => (

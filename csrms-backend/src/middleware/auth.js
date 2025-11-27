@@ -33,7 +33,7 @@ const auth = async (req, res, next) => {
       });
     }
 
-    req.user = { id: user._id, role: user.role };
+    req.user = { _id: user._id, id: user._id, role: user.role, district: user.district };
     next();
 
   } catch (error) {

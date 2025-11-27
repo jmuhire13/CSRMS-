@@ -1,109 +1,9 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { auth, authorize } = require('../middleware/auth');
+const Donation = require('../models/Donation');
 
 const router = express.Router();
-
-// Donation model
-const mongoose = require('mongoose');
-
-const donationSchema = new mongoose.Schema({
-  donationId: {
-    type: String,
-    unique: true,
-    required: true
-  },
-  donor: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  amount: {
-    type: Number,
-    required: true,
-    min: [1, 'Amount must be at least $1']
-  },
-  currency: {
-    type: String,
-    default: 'USD',
-    enum: ['USD', 'RWF']
-  },
-  type: {
-    type: String,
-    enum: ['one-time', 'monthly', 'quarterly', 'yearly'],
-    default: 'one-time'
-  },
-  category: {
-    type: String,
-    enum: ['general', 'healthcare', 'education', 'nutrition', 'housing', 'emergency'],
-    default: 'general'
-  },
-  status: {
-    type: String,
-    enum: ['pending', 'completed', 'failed', 'refunded'],
-    default: 'pending'
-  },
-  paymentMethod: {
-    type: String,
-    enum: ['credit-card', 'debit-card', 'paypal', 'bank-transfer', 'mobile-money'],
-    required: true
-  },
-  transactionId: String,
-  dedicatedTo: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Child'
-  }],
-  message: String,
-  isAnonymous: {
-    type: Boolean,
-    default: false
-  },
-  recurringDetails: {
-    isRecurring: { type: Boolean, default: false },
-    frequency: {
-      type: String,
-      enum: ['monthly', 'quarterly', 'yearly']
-    },
-    nextPaymentDate: Date,
-    endDate: Date,
-    isActive: { type: Boolean, default: true }
-  },
-  receipt: {
-    receiptNumber: String,
-    issued: { type: Boolean, default: false },
-    issuedDate: Date,
-    downloadUrl: String
-  },
-  impact: {
-    childrenHelped: { type: Number, default: 0 },
-    mealsProvided: { type: Number, default: 0 },
-    medicalCheckups: { type: Number, default: 0 },
-    schoolDays: { type: Number, default: 0 }
-  }
-}, {
-  timestamps: true
-});
-
-// Generate donation ID before saving
-donationSchema.pre('save', async function(next) {
-  if (!this.donationId) {
-    const year = new Date().getFullYear();
-    const count = await this.constructor.countDocuments();
-    this.donationId = `DON-${year}-${String(count + 1).padStart(3, '0')}`;
-  }
-  
-  // Generate receipt number if completed
-  if (this.status === 'completed' && !this.receipt.receiptNumber) {
-    this.receipt.receiptNumber = `RCP-${this.donationId}`;
-    this.receipt.issued = true;
-    this.receipt.issuedDate = new Date();
-  }
-  
-  next();
-});
-
-// Create Donation model
-const Donation = mongoose.model('Donation', donationSchema);
 
 // @route   GET /api/donations
 // @desc    Get donations (filtered by role)
@@ -259,6 +159,39 @@ router.get('/stats', auth, async (req, res) => {
       message: 'Server error'
     });
   }
+});
+
+// @route   GET /api/donations/donor/dashboard
+// @desc    Get donor dashboard stats
+// @access  Private (Donor)
+router.get('/donor/dashboard', [auth, authorize('donor')], async (req, res) => {
+  const donationController = require('../controllers/donationController');
+  return donationController.getDonorDashboard(req, res);
+});
+
+// @route   GET /api/donations/donor/history
+// @desc    Get donor's donation history
+// @access  Private (Donor)
+router.get('/donor/history', [auth, authorize('donor')], async (req, res) => {
+  const donationController = require('../controllers/donationController');
+  return donationController.getDonorHistory(req, res);
+});
+
+// @route   POST /api/donations/donor/donate
+// @desc    Create a new donation
+// @access  Private (Donor)
+router.post('/donor/donate', [auth, authorize('donor')], [
+  body('amount').isFloat({ min: 1 }).withMessage('Amount must be at least 1'),
+  body('paymentMethod').isIn(['credit-card', 'debit-card', 'paypal', 'bank-transfer', 'mobile-money']).withMessage('Invalid payment method'),
+  body('category').optional().isIn(['general', 'healthcare', 'education', 'nutrition', 'housing', 'emergency']).withMessage('Invalid category')
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success: false, errors: errors.array() });
+  }
+  
+  const donationController = require('../controllers/donationController');
+  return donationController.createDonation(req, res);
 });
 
 module.exports = router;

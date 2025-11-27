@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
-import apiService from '../../services/api'
+import apiService from '../services/api'
 
 const UserContext = createContext()
 
@@ -15,6 +15,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [requirePasswordChange, setRequirePasswordChange] = useState(false)
 
   useEffect(() => {
     checkAuthStatus()
@@ -41,9 +42,10 @@ export const UserProvider = ({ children }) => {
     }
   }
 
-  const login = (userData) => {
+  const login = (userData, needsPasswordChange = false) => {
     setUser(userData)
     setIsAuthenticated(true)
+    setRequirePasswordChange(needsPasswordChange)
   }
 
   const logout = () => {
@@ -58,7 +60,9 @@ export const UserProvider = ({ children }) => {
     login,
     logout,
     loading,
-    isAuthenticated
+    isAuthenticated,
+    requirePasswordChange,
+    setRequirePasswordChange
   }
 
   return (
